@@ -1,0 +1,7 @@
+.Rproj.user
+.Rhistory
+.RData
+*.ch5
+cellh5.R.orig
+data
+.DS_Store
