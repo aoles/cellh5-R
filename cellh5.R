@@ -5,7 +5,12 @@
 
 library('rhdf5')
 
-ch5.print_file_info <- function(file) {
+cToRIndex <- function(list_) {
+  return(list_ + 1)
+}
+
+
+ch5.PrintFileInfo<- function(file) {
   # list recursively the definiton of a cellh5 file
   list_ <- h5ls(H5Gopen(h5loc=file, name="/definition"))
   idx = which((substr(list_$group, nchar(list_$group), 
@@ -18,17 +23,20 @@ ch5.print_file_info <- function(file) {
   print(list_, right=FALSE)
 }
 
-ch5.definition <- function(file) {
+
+ch5.GlobalDefinition <- function(file) {
   return(h5read(file, compoundAsDataFrame=FALSE, name='/definition'))
 }
 
-ch5.plates <- function(file) {
+
+ch5.Plates <- function(file) {
   # return all list of plate names
   group = H5Gopen(h5loc=file, name="/sample/0/plate/")
   return(h5ls(group, recursive=F)$name)
 }
 
-ch5.positions <- function(file, plate) {
+
+ch5.Positions <- function(file, plate) {
   # return a list of position for a given file and plate  
   
   result <- list()
@@ -46,23 +54,56 @@ ch5.positions <- function(file, plate) {
       position_path <- sprintf("/sample/0/plate/%s/experiment/%s/position/%s", 
                                plate, well, position)
       group = H5Gopen(h5loc=file, name=position_path)
-      print(position_path)
       result[[sprintf("W%s_P%s", well, position)]] = group
     }
   } 
   return(result)
 }
 
-ch5.timelapse <- function(position, unit='frame') {
-  if (unit == "frame") {
-    return(position$image$time_lapses$frame)
-  } else if (unit=="timestamp_abs") {
-    return(position$image$time_lapses$timestamp_abs)
-  } else if (unit == "timestamp_rel") {
-    return(position$image$time_lapses$timestamp_rel)
-  }
+
+ch5.Timelapse <- function(position) {
+  return(h5read(position, name="image/time_lapse"))
 }
 
+
+ch5.ChannelRegions <- function(global_def) {
+  return(names(global_def[['feature']]))
+}
+
+
+ch5.ClassifierDefinition <- function(gdef, channel_region) {
+    return(gdef$feature[[channel_region]]$object_classification$class_labels)
+  }
+
+
+ch5.FeatureNames <- function(gdef, channel_region) {
+    return(gdef$feature[[channel_region]]$object_features)
+  }
+
+
+ch5.ObjectCounts <- function(position, global_def, channel_region) {
+  
+  classdef <- ch5.ClassifierDefinition(global_def, channel_region)  
+  time_idx <- h5read(position, name=sprintf("object/%s", channel_region))$time_idx
+  label_idx <- h5read(position,
+    name=sprintf("feature/%s/object_classification/prediction", channel_region))$label_idx
+
+  time_idx <- as.list(cToRIndex(time_idx))
+  label_idx <- as.list(cToRIndex(label_idx))
+  frames <- ch5.Timelapse(position)$frame
+  object_counts = data.frame()
+  
+  for (i in 1:length(frames)) {
+    frame = frames[[i]]
+    row = list()
+    for (j in 1:length(classdef$name)) {
+      classname = classdef$name[[j]]
+      object_counts[i, "frame"] = frame
+      object_counts[i, classname] = sum((label_idx == j)*(time_idx == frame))
+    }
+  }
+  return(object_counts)
+}
 # 
 # # open file (usually _all_positions.ch5)
 # file = H5Fopen("C:/Users/sommerc/R/cellh5/0038.hdf5")
