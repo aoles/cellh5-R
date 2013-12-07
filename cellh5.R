@@ -77,14 +77,14 @@ ch5.ClassifierDefinition <- function(gdef, channel_region) {
 
 
 ch5.FeatureNames <- function(gdef, channel_region) {
-    return(gdef$feature[[channel_region]]$object_features)
+    return(gdef$feature[[channel_region]]$object_features$name)
   }
 
 
 ch5.ObjectCounts <- function(position, global_def, channel_region) {
   
   classdef <- ch5.ClassifierDefinition(global_def, channel_region)  
-  time_idx <- h5read(position, name=sprintf("object/%s", channel_region))$time_idx
+  time_idx <- ch5.TimeIdx(position, channel_region)
   label_idx <- h5read(position,
     name=sprintf("feature/%s/object_classification/prediction", channel_region))$label_idx
 
@@ -104,6 +104,31 @@ ch5.ObjectCounts <- function(position, global_def, channel_region) {
   }
   return(object_counts)
 }
+
+ch5.FeaturesByName <- function(position, global_def,
+                               channel_region, feature_names, frames=NULL) {
+  features = h5read(pos, name='feature/primary__primary/object_features')
+  
+  ftr_idx = match(feature_names, ch5.FeatureNames(gdef, primary))
+    
+  if (is.null(frames)) {
+    features <- features[ftr_idx, ] 
+  } else {
+    time_idx <- ch5.TimeIdx(position, channel_region)
+    
+    frame_idx = which(which(frames %in% time_idx))
+    print(frame_idx)
+    features <- features[ftr_idx, frame_idx]
+  }
+  df <- data.frame(t(features))
+  colnames(df) <- feature_names
+  return(df)
+}
+
+ch5.TimeIdx <- function(position, channel_region) {
+  return(h5read(position, name=sprintf("object/%s", channel_region))$time_idx)
+}
+
 # 
 # # open file (usually _all_positions.ch5)
 # file = H5Fopen("C:/Users/sommerc/R/cellh5/0038.hdf5")
