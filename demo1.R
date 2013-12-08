@@ -1,34 +1,23 @@
 
+source('cellh5_S4.R')
+# library("grid")
 
-source('cellh5.R')
-library("grid")
 
-file_ = H5Fopen('data/_all_positions.ch5')
-# ch5.PrintFileInfo(file_)
-
-# INFORMATION FROM THE HEADER
-gdef = ch5.GlobalDefinition(file_)
-chreg <- ch5.ChannelRegions(gdef)
-primary <- chreg[[1]] # primary__primary
-classdef = ch5.ClassifierDefinition(gdef, primary)
-clfeatures = ch5.FeatureNames(gdef, primary)
+primary <- "primary__primary"
+c5f <- CellH5(file="data/_all_positions.ch5")
+chreg <- C5ChannelRegions(c5f)
+plates <- C5Plates(c5f)
+positions <- C5Positions(c5f, plates[[1]])
+tl = C5Timelapse(positions[[1]])
+clfeatures <- C5FeatureNames(c5f, primary)
 
 main_features = c("n2_avg", "n2_stddev", "roisize")
-main_features = clfeatures[c(1,2,3)]
+main_features <- clfeatures[c(1,2,3)]
+frames_ <-  c(0,1,2,3,4,5,6,7,8)
 
-plates <- ch5.Plates(file_)
-for ( i in 1:length(plates)) {
-    print(paste("loading plate: ", plates[i]))
-    positions <- ch5.Positions(file_, plates[i])
-}
-
-
-pos = positions[[1]] # 0013
-# tl <- ch5.Timelapse(positions[[1]])
-object_coutns <- ch5.ObjectCounts(positions[[1]], gdef, primary)
-features <- ch5.FeaturesByName(positions[[1]], gdef, primary,
-                               main_features, frames=NULL)
+object_counts <- C5ObjectCounts(c5f, positions[[1]], primary)
+features <- C5FeaturesByName(c5f, positions[[1]], primary,
+                             main_features, frames=frames_)
 
 print(paste("Number of plates: ", length(positions)))
-
-H5Fclose(file_)
+C5Close(c5f)
