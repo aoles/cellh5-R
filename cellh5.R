@@ -2,13 +2,11 @@
 # rudolf.hoefler@gmail.com
 # 2013/12/05
 
-
 library('rhdf5')
 
 cToRIndex <- function(list_) {
   return(list_ + 1)
 }
-
 
 ch5.PrintFileInfo<- function(file) {
   # list recursively the definiton of a cellh5 file
@@ -80,7 +78,6 @@ ch5.FeatureNames <- function(gdef, channel_region) {
     return(gdef$feature[[channel_region]]$object_features$name)
   }
 
-
 ch5.ObjectCounts <- function(position, global_def, channel_region) {
   
   classdef <- ch5.ClassifierDefinition(global_def, channel_region)  
@@ -115,9 +112,7 @@ ch5.FeaturesByName <- function(position, global_def,
     features <- features[ftr_idx, ] 
   } else {
     time_idx <- ch5.TimeIdx(position, channel_region)
-    
-    frame_idx = which(which(frames %in% time_idx))
-    print(frame_idx)
+    frame_idx <- which(time_idx %in% frames)
     features <- features[ftr_idx, frame_idx]
   }
   df <- data.frame(t(features))
@@ -128,47 +123,5 @@ ch5.FeaturesByName <- function(position, global_def,
 ch5.TimeIdx <- function(position, channel_region) {
   return(h5read(position, name=sprintf("object/%s", channel_region))$time_idx)
 }
-
-# 
-# # open file (usually _all_positions.ch5)
-# file = H5Fopen("C:/Users/sommerc/R/cellh5/0038.hdf5")
-# 
-# # get plate name
-# plate = ch5_get_plate_names(file)[1]
-# 
-# # get all positions of that plate
-# position_list = ch5_get_positions(file, plate)
-# 
-# # get for example the first position
-# pos = position_list[[1]]
-# 
-# # count objects for time index 0
-# time_index = 0
-# time_indecies = h5read(pos, name='object/primary__primary')$time_idx == time_index
-# object_count = length(which(time_indecies))
-# 
-# # extract all features for the primary segmentation
-# features = h5read(pos, name='feature/primary__primary/object_features')
-# 
-# # get feature description to choose the feature index of e.g. n2_avg
-# global_def = h5read(file, name="/definition")
-# 
-# # print all computed feature names
-# feature_names = global_def$feature$primary__primary$object_classification$features
-# #print(feature_names)
-# 
-# # find index of n2_avg
-# feature_index = which(feature_names == "n2_avg")
-# 
-# # extract feature for time index 0
-# 
-# feature_Values = features[feature_index, time_indecies]
-# 
-# 
-# #H5Gclose(pos)
-# #H5Fclose(file)
-# 
-# 
-
 
 
