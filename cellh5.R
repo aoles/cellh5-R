@@ -1,7 +1,11 @@
+# S4 class with some convenience function to read data from cellh5 (hdf5) file
+# 2013/12/07
+# rudolf.hoefler@gmail.com
+
 library('rhdf5')
 
-
 cToRIndex <- function(list_) {
+  # Cellh5 is index based, R used fortran index convention --> it sucks
   return(list_ + 1)
 }
 
@@ -16,6 +20,7 @@ CellH5 <- function(file=NA) {
   new("CellH5", filename=file, fid=H5Fopen(file), global_def=gdef)
 }
 
+# XXX remove standardGenerics if possible
 setGeneric("C5Close", function(object) {H5Fclose(object@fid)})
 setGeneric("C5FileInfo", function(object) {standardGeneric("C5FileInfo")})
 setGeneric("C5Plates", function(object) {standardGeneric("C5Plates")})
@@ -30,6 +35,7 @@ setGeneric("C5ClassifierDefinition", function(object, channel_region, ...) {
   standardGeneric("C5ClassifierDefinition")})
 setGeneric("C5FeatureNames", function(object, channel_region, ...) {
   standardGeneric("C5FeatureNames")})
+
 setGeneric("C5Timelapse", function(position) {
   return(h5read(position, name="image/time_lapse"))
 })
