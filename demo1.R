@@ -24,6 +24,7 @@ center <- C5Center(positions[[1]], primary)
 bbox <- C5BoundingBoxes(positions[[1]], primary)
 orientation <- C5Orientation(positions[[1]], primary)
 predicitons <- C5Predictions(c5f, positions[[1]], primary)
+probs <- C5PredictionProbabilities(c5f, positions[[1]], primary)
 
 print(paste("Number of plates: ", length(positions)))
 C5Close(c5f)

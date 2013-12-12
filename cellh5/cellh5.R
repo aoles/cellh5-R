@@ -9,6 +9,10 @@ cToRIndex <- function(list_) {
   return(list_ + 1)
 }
 
+rToCIndex <- function(list_) {
+  return(list_ - 1)
+}
+
 CellH5 <- setClass("CellH5", 
                    slots = c(filename="character", 
                              fid="H5IdComponent",
@@ -219,12 +223,28 @@ setMethod("C5Predictions", "CellH5", function(object, position, channel_region) 
   label_idx <- h5read(position,
                       name=sprintf("feature/%s/object_classification/prediction",
                                    channel_region))$label_idx
-  lables <- list()
-  for (i in 1:classdef$label) {
-    labels[which(label_idx == i)] <- classdef$label[[i]]
+  
+
+  labels_ <- list()
+  # print(label_idx)
+  for (i in 1:length(classdef$label)) {
+    labels_[which(label_idx == rToCIndex(i))] <- classdef$name[[i]]
   }
-  return(lables)
-         
+  return(labels_)         
 })
+
+setMethod("C5PredictionProbabilities", "CellH5", function(object, position,
+                                                          channel_region) {
+  classdef <- C5ClassifierDefinition(object, channel_region) 
+  probs <- h5read(position,
+                  name=sprintf("feature/%s/object_classification/probability",
+                                channel_region))
+  
+  df = data.frame(t(probs))
+  colnames(df) <- classdef$name
+  return(df)         
+  })
+
+                                                          
 
 
