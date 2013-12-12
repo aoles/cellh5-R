@@ -22,27 +22,96 @@ CellH5 <- function(file=NA) {
 
 # XXX remove standardGenerics if possible
 setGeneric("C5Close", function(object) {H5Fclose(object@fid)})
+
 setGeneric("C5FileInfo", function(object) {standardGeneric("C5FileInfo")})
+
 setGeneric("C5Plates", function(object) {standardGeneric("C5Plates")})
+
 setGeneric("C5Positions", function(object, plate, ...) {standardGeneric("C5Positions")})
+
 setGeneric("C5ChannelRegions", function(object) {standardGeneric("C5ChannelRegions")})
+
 setGeneric("C5ObjectCounts", function(object, position, channel_region, ...) {
   standardGeneric("C5ObjectCounts")})
+
 setGeneric("C5FeaturesByName", function(object, position, channel_region, 
                                         feature_names, frames=NULL, ...) {
   standardGeneric("C5FeaturesByName")})
+
 setGeneric("C5ClassifierDefinition", function(object, channel_region, ...) {
   standardGeneric("C5ClassifierDefinition")})
+
 setGeneric("C5FeatureNames", function(object, channel_region, ...) {
   standardGeneric("C5FeatureNames")})
 
 setGeneric("C5Timelapse", function(position) {
   return(h5read(position, name="image/time_lapse"))
 })
+
 setGeneric("C5TimeIdx", function(position, channel_region) {
   return(h5read(position, name=sprintf("object/%s", channel_region))$time_idx)
 })
 
+setGeneric("C5Orientation", function(position, channel_region, frames=NULL) {
+  center = h5read(position, name=sprintf('feature/%s/orientation', channel_region))
+  
+  if (is.null(frames)) {
+    df <- data.frame(center)
+  } else { 
+    time_idx <- C5TimeIdx(position, channel_region)   
+    frame_idx <- which(time_idx %in% frames)
+    df <- data.frame(center[frame_idx, ])
+  }
+  return(df)
+})
+
+setGeneric("C5BoundingBoxes", function(position, channel_region, frames=NULL) {
+  center = h5read(position, name=sprintf('feature/%s/bounding_box', channel_region))
+  
+  if (is.null(frames)) {
+    df <- data.frame(center)
+  } else { 
+    time_idx <- C5TimeIdx(position, channel_region)   
+    frame_idx <- which(time_idx %in% frames)
+    df <- data.frame(center[frame_idx, ])
+  }
+  return(df)
+})
+
+setGeneric("C5Center", function(position, channel_region, frames=NULL) {
+    center = h5read(position, name=sprintf('feature/%s/center', channel_region))
+            
+    if (is.null(frames)) {
+      df <- data.frame(center)
+    } else { 
+      time_idx <- C5TimeIdx(position, channel_region)   
+      frame_idx <- which(time_idx %in% frames)
+      df <- data.frame(center[frame_idx, ])
+    }
+    return(df)
+})
+
+setGeneric("C5ObjectLabels", function(position, channel_region, frames=NULL) {
+  object_labels = h5read(position, name=sprintf('object/%s', channel_region))
+  
+  if (is.null(frames)) {
+    df <- data.frame(object_labels)
+  } else { 
+    time_idx <- C5TimeIdx(position, channel_region)   
+    frame_idx <- which(time_idx %in% frames)
+    df <- data.frame(object_labels[frame_idx, ])
+  }
+  
+  colnames(df) <- c("frame_index", "object_label")
+  df$frame_index <- cToRIndex(df$frame_index)
+  return(df)
+})
+
+setGeneric("C5Predictions", function(object, position, channel_region, ...) {
+  standardGeneric("C5Predictions")})
+
+setGeneric("C5PredictionProbabilities", function(object, position, channel_region, ...) {
+  standardGeneric("C5PredictionProbabilities")})
 
 setMethod("C5ObjectCounts", "CellH5", function(object, position, channel_region) {
   classdef <- C5ClassifierDefinition(object, channel_region)  
@@ -70,7 +139,7 @@ setMethod("C5ObjectCounts", "CellH5", function(object, position, channel_region)
 
 setMethod("C5FeaturesByName", "CellH5", 
           function(object, position, channel_region, feature_names, frames=NULL) {
-    features = h5read(position, name='feature/primary__primary/object_features')
+    features = h5read(position, name=sprintf('feature/%s/object_features', channel_region))
     ftr_idx = match(feature_names, C5FeatureNames(object, channel_region))
              
     if (is.null(frames)) {
@@ -144,3 +213,18 @@ setMethod("C5FileInfo", "CellH5",
             print(list_, right=FALSE)
           }
         )
+
+setMethod("C5Predictions", "CellH5", function(object, position, channel_region) {
+  classdef <- C5ClassifierDefinition(object, channel_region) 
+  label_idx <- h5read(position,
+                      name=sprintf("feature/%s/object_classification/prediction",
+                                   channel_region))$label_idx
+  lables <- list()
+  for (i in 1:classdef$label) {
+    labels[which(label_idx == i)] <- classdef$label[[i]]
+  }
+  return(lables)
+         
+})
+
+
