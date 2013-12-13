@@ -117,6 +117,10 @@ setGeneric("C5Predictions", function(object, position, channel_region, ...) {
 setGeneric("C5PredictionProbabilities", function(object, position, channel_region, ...) {
   standardGeneric("C5PredictionProbabilities")})
 
+setGeneric("C5ReadImage", function(object, position, channel_region, frame_index, zstack, 
+                                   label_image=FALSE, ...) {
+  standardGeneric("C5ReadImage")})
+
 setMethod("C5ObjectCounts", "CellH5", function(object, position, channel_region) {
   classdef <- C5ClassifierDefinition(object, channel_region)  
   time_idx <- C5TimeIdx(position, channel_region)
@@ -245,6 +249,19 @@ setMethod("C5PredictionProbabilities", "CellH5", function(object, position,
   return(df)         
   })
 
-                                                          
+setMethod("C5ReadImage", "CellH5", function(object, position, channel_region,
+                                            frame_index, zstack=1, label_image=FALSE) {
+  cdf = data.frame(object@global_def$image$region)
+  color_index <- cToRIndex(cdf$channel_idx[which(cdf$region_name == sprintf("region___%s", channel_region))])
+  
+  if (label_image) {
+    itype <- "image/region"
+  } else {
+    itype <- "image/channel"
+  }
 
-
+  image <- h5read(position, name=itype,
+                 index=list(NULL, NULL, frame_index, zstack, color_index))[, , frame_index, zstack, color_index]
+  
+  return(image)
+})
