@@ -1,7 +1,6 @@
 
 library("grid")
 source("cellh5/cellh5.R")
-source("cellh5/cellh5_image.R")
 
 # helper see tutorial
 toRaster <- function(x, cuts=-1:255+0.5,
