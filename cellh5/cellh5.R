@@ -260,8 +260,9 @@ setMethod("C5ReadImage", "CellH5", function(object, position, channel_region,
     itype <- "image/channel"
   }
 
-  image <- h5read(position, name=itype,
-                 index=list(NULL, NULL, frame_index, zstack, color_index))[, , frame_index, zstack, color_index]
+  print(c(zstack, frame_index, color_index))
+  image_ <- h5read(position, name=itype,
+                 index=list(NULL, NULL, zstack, frame_index, color_index))
   
-  return(image)
+  return(image_)
 })
