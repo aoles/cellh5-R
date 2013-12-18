@@ -25,7 +25,8 @@ CellH5 <- function(file=NA) {
 }
 
 # XXX remove standardGenerics if possible
-setGeneric("C5Close", function(object) {H5Fclose(object@fid)})
+setGeneric("C5Close", function(object) {
+  H5Fclose(object@fid)})
 
 setGeneric("C5FileInfo", function(object) {standardGeneric("C5FileInfo")})
 
@@ -177,13 +178,18 @@ setMethod("C5ChannelRegions", "CellH5", function(object) {
 setMethod("C5Positions", "CellH5", function(object, plate) {
   result <- list()
   plate_path <- sprintf("/sample/0/plate/%s/experiment/", plate)
-  wells <- h5ls(H5Gopen(h5loc=object@fid, name=plate_path), recursive=F)$name
+  h5wells <- H5Gopen(h5loc=object@fid, name=plate_path)
+  wells <- h5ls(h5wells, recursive=F)$name
+  H5Gclose(h5wells)
   
   for (wi in 1:length(wells)) {
     well = wells[wi]
     well_path <- sprintf("/sample/0/plate/%s/experiment/%s/position", 
                          plate, well)
-    positions = h5ls(H5Gopen(h5loc=object@fid, name=well_path), recursive=F)$name
+    
+    h5pos <- H5Gopen(h5loc=object@fid, name=well_path)
+    positions = h5ls(h5pos, recursive=F)$name
+    h5close(h5pos)
     
     for (pi in 1:length(positions)) {
       position = positions[pi]
@@ -198,8 +204,10 @@ setMethod("C5Positions", "CellH5", function(object, plate) {
 
 setMethod("C5Plates", "CellH5",
           function(object) {
-            group = H5Gopen(h5loc=object@fid, name="/sample/0/plate/")
-            return(h5ls(group, recursive=F)$name)
+            group <- H5Gopen(h5loc=object@fid, name="/sample/0/plate/")
+            plates <-h5ls(group, recursive=F)$name
+            H5Gclose(group)
+            return(plates)
           })
           
 setMethod("C5Timelapse", "CellH5",
@@ -210,7 +218,9 @@ setMethod("C5Timelapse", "CellH5",
 setMethod("C5FileInfo", "CellH5",
           function(object) {
             print(paste("File: ", object@filename))
-            list_ <- h5ls(H5Gopen(h5loc=object@fid, name="/definition"))
+            gdef <- H5Gopen(h5loc=object@fid, name="/definition")
+            list_ <- h5ls(gdef)
+            H5Gclose(gdef)
             idx = which((substr(list_$group, nchar(list_$group), 
                                 nchar(list_$group)) == "/") & (nchar(list_$group) == 1))
             list_$group[idx] = ""
