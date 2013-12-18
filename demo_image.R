@@ -18,7 +18,7 @@ plates <- C5Plates(c5f)
 positions <- C5Positions(c5f, plates[[1]])
 
 image_ <- C5ReadImage(c5f, positions[[1]], primary, frame=1, zstack=1)
-label_image <- C5ReadImage(c5f, positions[[1]], primary, frame=1, zstack=1, label_image=TRUE)
+label_image <- C5ReadImage(c5f, positions[[1]], primary, frame=10, zstack=1, label_image=TRUE)
 
 pdf(file="demo_image.pdf")
 grid.raster(toRaster(t(image_)))

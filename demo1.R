@@ -24,7 +24,7 @@ bbox <- C5BoundingBoxes(positions[[1]], primary)
 orientation <- C5Orientation(positions[[1]], primary)
 predicitons <- C5Predictions(c5f, positions[[1]], primary)
 probs <- C5PredictionProbabilities(c5f, positions[[1]], primary)
-image_ <- C5ReadImage(c5f, positions[[1]], primary, frame_index=1, zstack=1)
+image_ <- C5ReadImage(c5f, positions[[1]], primary, frame_index=1, zstack=1)[, , 1,1,1]
 
 
 C5Close(c5f)
