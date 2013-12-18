@@ -29,5 +29,6 @@ predicitons <- C5Predictions(c5f, positions$W0_P0013, primary)
 probs <- C5PredictionProbabilities(c5f, positions$W0_P0013, primary)
 image_ <- C5ReadImage(c5f, positions$W0_P0013, primary, frame_index=1, zstack=1)
 
+events <- C5Events(c5f, positions[[1]], primary)
 # don't forget to release the resources
 #C5Close(c5f)

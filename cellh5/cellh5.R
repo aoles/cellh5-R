@@ -16,37 +16,38 @@ rToCIndex <- function(list_) {
 CellH5 <- setClass("CellH5", 
                    slots = c(filename="character", 
                              fid="H5IdComponent",
-                             global_def="list"))
+                             global_def="list",
+                             positions="list"))
 
 CellH5 <- function(file=NA) {
   fid <- H5Fopen(file)
   gdef <- h5read(fid, compoundAsDataFrame=FALSE, name='/definition')
-  new("CellH5", filename=file, fid=H5Fopen(file), global_def=gdef)
+  new("CellH5", filename=file, fid=H5Fopen(file), global_def=gdef, positions=list())
 }
 
 # XXX remove standardGenerics if possible
-setGeneric("C5Close", function(object) {
-  H5Fclose(object@fid)})
+setGeneric("C5Close", function(ch5file) {
+  H5Fclose(ch5file@fid)})
 
-setGeneric("C5FileInfo", function(object) {standardGeneric("C5FileInfo")})
+setGeneric("C5FileInfo", function(ch5file) {standardGeneric("C5FileInfo")})
 
-setGeneric("C5Plates", function(object) {standardGeneric("C5Plates")})
+setGeneric("C5Plates", function(ch5file) {standardGeneric("C5Plates")})
 
-setGeneric("C5Positions", function(object, plate, ...) {standardGeneric("C5Positions")})
+setGeneric("C5Positions", function(ch5file, plate, ...) {standardGeneric("C5Positions")})
 
-setGeneric("C5ChannelRegions", function(object) {standardGeneric("C5ChannelRegions")})
+setGeneric("C5ChannelRegions", function(ch5file) {standardGeneric("C5ChannelRegions")})
 
-setGeneric("C5ObjectCounts", function(object, position, channel_region, ...) {
+setGeneric("C5ObjectCounts", function(ch5file, position, channel_region, ...) {
   standardGeneric("C5ObjectCounts")})
 
-setGeneric("C5FeaturesByName", function(object, position, channel_region, 
+setGeneric("C5FeaturesByName", function(ch5file, position, channel_region, 
                                         feature_names, frames=NULL, ...) {
   standardGeneric("C5FeaturesByName")})
 
-setGeneric("C5ClassifierDefinition", function(object, channel_region, ...) {
+setGeneric("C5ClassifierDefinition", function(ch5file, channel_region, ...) {
   standardGeneric("C5ClassifierDefinition")})
 
-setGeneric("C5FeatureNames", function(object, channel_region, ...) {
+setGeneric("C5FeatureNames", function(ch5file, channel_region, ...) {
   standardGeneric("C5FeatureNames")})
 
 setGeneric("C5Timelapse", function(position) {
@@ -112,18 +113,22 @@ setGeneric("C5ObjectLabels", function(position, channel_region, frames=NULL) {
   return(df)
 })
 
-setGeneric("C5Predictions", function(object, position, channel_region, ...) {
+setGeneric("C5Predictions", function(ch5file, position, channel_region, ...) {
   standardGeneric("C5Predictions")})
 
-setGeneric("C5PredictionProbabilities", function(object, position, channel_region, ...) {
+setGeneric("C5PredictionProbabilities", function(ch5file, position, channel_region, ...) {
   standardGeneric("C5PredictionProbabilities")})
 
-setGeneric("C5ReadImage", function(object, position, channel_region, frame_index, zstack, 
+setGeneric("C5ReadImage", function(ch5file, position, channel_region, frame_index, zstack, 
                                    label_image=FALSE, ...) {
   standardGeneric("C5ReadImage")})
 
-setMethod("C5ObjectCounts", "CellH5", function(object, position, channel_region) {
-  classdef <- C5ClassifierDefinition(object, channel_region)  
+setGeneric("C5Events", function(ch5file, position, channel_region, ...) {
+  standardGeneric("C5Events")
+})
+
+setMethod("C5ObjectCounts", "CellH5", function(ch5file, position, channel_region) {
+  classdef <- C5ClassifierDefinition(ch5file, channel_region)  
   time_idx <- C5TimeIdx(position, channel_region)
   label_idx <- h5read(position,
                       name=sprintf("feature/%s/object_classification/prediction",
@@ -147,9 +152,9 @@ setMethod("C5ObjectCounts", "CellH5", function(object, position, channel_region)
 })
 
 setMethod("C5FeaturesByName", "CellH5", 
-          function(object, position, channel_region, feature_names, frames=NULL) {
+          function(ch5file, position, channel_region, feature_names, frames=NULL) {
     features = h5read(position, name=sprintf('feature/%s/object_features', channel_region))
-    ftr_idx = match(feature_names, C5FeatureNames(object, channel_region))
+    ftr_idx = match(feature_names, C5FeatureNames(ch5file, channel_region))
              
     if (is.null(frames)) {
       features <- features[ftr_idx, ] 
@@ -163,22 +168,22 @@ setMethod("C5FeaturesByName", "CellH5",
     return(df)
   })
        
-setMethod("C5FeatureNames", "CellH5", function(object, channel_region) {
-    return(object@global_def$feature[[channel_region]]$object_features$name)
+setMethod("C5FeatureNames", "CellH5", function(ch5file, channel_region) {
+    return(ch5file@global_def$feature[[channel_region]]$object_features$name)
   })
 
-setMethod("C5ClassifierDefinition", "CellH5", function(object, channel_region) {
-  return(object@global_def$feature[[channel_region]]$object_classification$class_labels)
+setMethod("C5ClassifierDefinition", "CellH5", function(ch5file, channel_region) {
+  return(ch5file@global_def$feature[[channel_region]]$ch5file_classification$class_labels)
 })
           
-setMethod("C5ChannelRegions", "CellH5", function(object) {
-    return(names(object@global_def[["feature"]]))
+setMethod("C5ChannelRegions", "CellH5", function(ch5file) {
+    return(names(ch5file@global_def[["feature"]]))
 })
 
-setMethod("C5Positions", "CellH5", function(object, plate) {
+setMethod("C5Positions", "CellH5", function(ch5file, plate) {
   result <- list()
   plate_path <- sprintf("/sample/0/plate/%s/experiment/", plate)
-  h5wells <- H5Gopen(h5loc=object@fid, name=plate_path)
+  h5wells <- H5Gopen(h5loc=ch5file@fid, name=plate_path)
   wells <- h5ls(h5wells, recursive=F)$name
   H5Gclose(h5wells)
   
@@ -187,15 +192,15 @@ setMethod("C5Positions", "CellH5", function(object, plate) {
     well_path <- sprintf("/sample/0/plate/%s/experiment/%s/position", 
                          plate, well)
     
-    h5pos <- H5Gopen(h5loc=object@fid, name=well_path)
+    h5pos <- H5Gopen(h5loc=ch5file@fid, name=well_path)
     positions = h5ls(h5pos, recursive=F)$name
-    h5close(h5pos)
+    H5Gclose(h5pos)
     
     for (pi in 1:length(positions)) {
       position = positions[pi]
       position_path <- sprintf("/sample/0/plate/%s/experiment/%s/position/%s", 
                                plate, well, position)
-      group = H5Gopen(h5loc=object@fid, name=position_path)
+      group = H5Gopen(h5loc=ch5file@fid, name=position_path)
       result[[sprintf("W%s_P%s", well, position)]] = group
       }
     } 
@@ -203,8 +208,8 @@ setMethod("C5Positions", "CellH5", function(object, plate) {
   })
 
 setMethod("C5Plates", "CellH5",
-          function(object) {
-            group <- H5Gopen(h5loc=object@fid, name="/sample/0/plate/")
+          function(ch5file) {
+            group <- H5Gopen(h5loc=ch5file@fid, name="/sample/0/plate/")
             plates <-h5ls(group, recursive=F)$name
             H5Gclose(group)
             return(plates)
@@ -216,9 +221,9 @@ setMethod("C5Timelapse", "CellH5",
           })
 
 setMethod("C5FileInfo", "CellH5",
-          function(object) {
-            print(paste("File: ", object@filename))
-            gdef <- H5Gopen(h5loc=object@fid, name="/definition")
+          function(ch5file) {
+            print(paste("File: ", ch5file@filename))
+            gdef <- H5Gopen(h5loc=ch5file@fid, name="/definition")
             list_ <- h5ls(gdef)
             H5Gclose(gdef)
             idx = which((substr(list_$group, nchar(list_$group), 
@@ -232,8 +237,8 @@ setMethod("C5FileInfo", "CellH5",
           }
         )
 
-setMethod("C5Predictions", "CellH5", function(object, position, channel_region) {
-  classdef <- C5ClassifierDefinition(object, channel_region) 
+setMethod("C5Predictions", "CellH5", function(ch5file, position, channel_region) {
+  classdef <- C5ClassifierDefinition(ch5file, channel_region) 
   label_idx <- h5read(position,
                       name=sprintf("feature/%s/object_classification/prediction",
                                    channel_region))$label_idx
@@ -247,9 +252,9 @@ setMethod("C5Predictions", "CellH5", function(object, position, channel_region) 
   return(labels_)         
 })
 
-setMethod("C5PredictionProbabilities", "CellH5", function(object, position,
+setMethod("C5PredictionProbabilities", "CellH5", function(ch5file, position,
                                                           channel_region) {
-  classdef <- C5ClassifierDefinition(object, channel_region) 
+  classdef <- C5ClassifierDefinition(ch5file, channel_region) 
   probs <- h5read(position,
                   name=sprintf("feature/%s/object_classification/probability",
                                 channel_region))
@@ -259,9 +264,9 @@ setMethod("C5PredictionProbabilities", "CellH5", function(object, position,
   return(df)         
   })
 
-setMethod("C5ReadImage", "CellH5", function(object, position, channel_region,
+setMethod("C5ReadImage", "CellH5", function(ch5file, position, channel_region,
                                             frame_index, zstack=1, label_image=FALSE) {
-  cdf = data.frame(object@global_def$image$region)
+  cdf = data.frame(ch5file@global_def$image$region)
   color_index <- cToRIndex(cdf$channel_idx[which(cdf$region_name == sprintf("region___%s", channel_region))])
   
   if (label_image) {
@@ -274,4 +279,28 @@ setMethod("C5ReadImage", "CellH5", function(object, position, channel_region,
                  index=list(NULL, NULL, zstack, frame_index, color_index))[, , 1,1,1]
   
   return(image_)
+})
+
+setMethod("C5Events", "CellH5", function(ch5file, position, channel_region) {
+  events <- data.frame(h5read(position, name="object/event"))
+  # class labels for certain channels
+  predictions <- C5Predictions(ch5file, position, channel_region)
+  
+  track_ids <- unique(events$obj_id)
+  tracks = list()
+  for (i in 1:length(track_ids)) {
+      idx <- which(events$obj_id == rToCIndex(i))
+      print(which(duplicated(events$idx1[idx])))
+      print("asdf")
+      print(which(duplicated(events$idx2[idx])))
+#       for (j in 1:lenght(idx) {
+#           
+#       })
+#       startid = events$idx1[idx][1]
+#       
+#       print(paste("len: ", length(idx)))
+#       object_indices <- c(events$idx1[idx], events$idx2[length(idx)])
+#       tracks[[i]] <- object_indices
+  }
+  return(tracks)
 })
