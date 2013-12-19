@@ -123,8 +123,14 @@ setGeneric("C5ReadImage", function(ch5file, position, channel_region, frame_inde
                                    label_image=FALSE, ...) {
   standardGeneric("C5ReadImage")})
 
-setGeneric("C5Events", function(ch5file, position, channel_region, ...) {
+setGeneric("C5Events", function(ch5file, position, channel_region, 
+                                include_branches=TRUE, return_indices=FALSE, ...) {
   standardGeneric("C5Events")
+})
+
+setGeneric("C5EventFeatures", function(ch5file, position, channel_region, 
+                                include_branches=TRUE, feature_names=NULL, ...) {
+  standardGeneric("C5EventFeatures")
 })
 
 setMethod("C5ObjectCounts", "CellH5", function(ch5file, position, channel_region) {
@@ -138,7 +144,6 @@ setMethod("C5ObjectCounts", "CellH5", function(ch5file, position, channel_region
   label_idx <- as.list(cToRIndex(label_idx))
   frames <- C5Timelapse(position)$frame
   object_counts = data.frame()
-  
   for (i in 1:length(frames)) {
     frame = frames[[i]]
     row = list()
@@ -173,7 +178,7 @@ setMethod("C5FeatureNames", "CellH5", function(ch5file, channel_region) {
   })
 
 setMethod("C5ClassifierDefinition", "CellH5", function(ch5file, channel_region) {
-  return(ch5file@global_def$feature[[channel_region]]$ch5file_classification$class_labels)
+  return(ch5file@global_def$feature[[channel_region]]$object_classification$class_labels)
 })
           
 setMethod("C5ChannelRegions", "CellH5", function(ch5file) {
@@ -277,30 +282,61 @@ setMethod("C5ReadImage", "CellH5", function(ch5file, position, channel_region,
 
   image_ <- h5read(position, name=itype,
                  index=list(NULL, NULL, zstack, frame_index, color_index))[, , 1,1,1]
-  
   return(image_)
 })
 
-setMethod("C5Events", "CellH5", function(ch5file, position, channel_region) {
+setMethod("C5Events", "CellH5", function(ch5file, position, channel_region, 
+                                         include_branches=TRUE, return_indices=FALSE) {
   events <- data.frame(h5read(position, name="object/event"))
   # class labels for certain channels
   predictions <- C5Predictions(ch5file, position, channel_region)
-  
   track_ids <- unique(events$obj_id)
+  
+  if (!return_indices) {
+    toPredictions <- function(i) {return(predictions[[i]])}  
+  } else {
+    toPredictions <- function(i) {return(i)}
+  }
+  
   tracks = list()
   for (i in 1:length(track_ids)) {
-      idx <- which(events$obj_id == rToCIndex(i))
-      print(which(duplicated(events$idx1[idx])))
-      print("asdf")
-      print(which(duplicated(events$idx2[idx])))
-#       for (j in 1:lenght(idx) {
-#           
-#       })
-#       startid = events$idx1[idx][1]
-#       
-#       print(paste("len: ", length(idx)))
-#       object_indices <- c(events$idx1[idx], events$idx2[length(idx)])
-#       tracks[[i]] <- object_indices
+    idx <- which(events$obj_id == rToCIndex(i))
+    pos_dub <- anyDuplicated(events$idx1[idx])
+    if (pos_dub == 0) {
+      track <- c(events$idx1[idx], tail(events$idx2[idx], n=1))
+      tracks <- rbind(tracks, lapply(track, toPredictions))
+    } else {
+      # in case of a 2nd branch
+      i1 <- anyDuplicated(events$idx1[idx]) - 1 # position of the duplicate
+      i2 <- anyDuplicated(events$idx1[idx], fromLast=TRUE) # position of the "original"
+      track <- c(events$idx1[idx][1], events$idx2[idx][1:i1])
+      tracks <- rbind(tracks, lapply(track, toPredictions))
+      if (include_branches) {
+        track <- c(events$idx1[idx][1:i2], events$idx2[idx][(i1+1):length(idx)])
+        tracks <- rbind(tracks, lapply(track, toPredictions))
+      }
+    } 
   }
-  return(tracks)
+  return(data.frame(tracks))
+})
+
+setMethod("C5EventFeatures", "CellH5", function(ch5file, position, channel_region, 
+                                                include_branches=TRUE, feature_names=NULL) {
+  
+  features <- C5FeaturesByName(ch5file, position, channel_region, feature_names)       
+  events <- C5Events(ch5file, position, channel_region, return_indices=TRUE)
+
+  dims <- c(dim(events), dim(features)[2])
+  efeatures = array(NA, dim=dims)
+          
+  for (i in 1:dims[1]){
+    for (j in 1:dims[2]) {
+      # it sucks, why is it not working!
+      # efeatures[i,j, ] <- features[[events[[i, j]], ]]
+      for (k in 1:dims[3]) {
+        efeatures[i,j,k] <- features[[events[[i, j]], k ]]
+      }
+    }
+  }
+  return(efeatures)
 })

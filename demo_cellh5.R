@@ -25,10 +25,11 @@ object_ids <- C5ObjectLabels(positions[[1]], primary, frames=frames_)
 center <- C5Center(positions$W0_P0013, primary)
 bbox <- C5BoundingBoxes(positions$W0_P0013, primary)
 orientation <- C5Orientation(positions$W0_P0013, primary)
-predicitons <- C5Predictions(c5f, positions$W0_P0013, primary)
+predictions <- C5Predictions(c5f, positions$W0_P0013, primary)
 probs <- C5PredictionProbabilities(c5f, positions$W0_P0013, primary)
 image_ <- C5ReadImage(c5f, positions$W0_P0013, primary, frame_index=1, zstack=1)
 
-events <- C5Events(c5f, positions[[1]], primary)
+events <- C5Events(c5f, positions[[1]], primary, include_branches=TRUE, return_indices=TRUE)
+event_features <- C5EventFeatures(c5f, positions[[1]], primary, TRUE, main_features)
 # don't forget to release the resources
 #C5Close(c5f)
