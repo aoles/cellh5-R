@@ -97,17 +97,9 @@ setGeneric("C5Center", function(position, channel_region, frames=NULL) {
     return(df)
 })
 
-setGeneric("C5ObjectLabels", function(position, channel_region, frames=NULL) {
+setGeneric("C5ObjectLabels", function(position, channel_region) {
   object_labels = h5read(position, name=sprintf('object/%s', channel_region))
-  
-  if (is.null(frames)) {
-    df <- data.frame(object_labels)
-  } else { 
-    time_idx <- C5TimeIdx(position, channel_region)   
-    frame_idx <- which(time_idx %in% frames)
-    df <- data.frame(object_labels[frame_idx, ])
-  }
-  
+  df <- data.frame(object_labels)
   colnames(df) <- c("frame_index", "object_label")
   df$frame_index <- cToRIndex(df$frame_index)
   return(df)
