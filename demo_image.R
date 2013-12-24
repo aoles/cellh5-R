@@ -1,6 +1,6 @@
 
 library("grid")
-source("cellh5/cellh5.R")
+library("cellh5")
 
 primary <- "primary__primary"
 c5f <- CellH5(file="data/_all_positions.ch5")

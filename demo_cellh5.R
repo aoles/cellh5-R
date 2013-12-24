@@ -2,7 +2,7 @@
 # 2013/12/07
 # rudolf.hoefler@gmail.com
 
-source('cellh5/cellh5.R')
+library(cellh5)
 
 c5f <- CellH5("data/_all_positions.ch5")
 
