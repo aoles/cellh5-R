@@ -1,0 +1,13 @@
+Package: cellh5
+Version: 0.1
+Date: 2013/12/18
+Title: CellH5 reader
+Author: Rudolf Hoefler <rudolf.hoefler@gmail.com>
+Maintainer: Rudolf Hoefler <rudolf.hoefler@gmail.com>
+Depends: R (>= 3.0.0), rhdf5, methods
+Suggests:
+Description: Provides an S4 class to read data from cellh5 files
+License: LGPL (>= 3)
+URL: http://cellh5.org
+BugReports: https://github.com/CellH5/C5/issues
+LazyLoad: yes
