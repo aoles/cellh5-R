@@ -1,22 +1,27 @@
-\name{C5Events}
-\alias{C5Events}
-\title{Read out the tracks found by the event selection.}
-\description{Read out the tracks found by the event selection.}
-\usage{
-C5Events(ch5file, position, channel_region, include_branches = TRUE, return_indices = FALSE, ...)
+\name{C5EventFeatures}
+\alias{C5EventFeatures}
+\title{Return the feature vector per track found by the event selection}
+\description{Returns a 3-dimensional array of features similar to the trajectory 
+matrices. Each row is a track, each column is a frame. The 3rd dimenension is the 
+feature vector for a particular object.
 }
-
+\usage{
+C5EventFeatures(ch5file, position, channel_region, include_branches = TRUE, feature_names = NULL, ...)
+}
+%- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{ch5file}{ \code{\link{CellH5}} instance }
   \item{postions}{\code{Item of \link{C5Positions}}}
   \item{channel_region}{A channel-region pair e.g. \code{primary__primary}}
-  \item{frames}{List of frames numbers. Default is \code{NULL} meaning all available frames.}
   \item{include_branches}{If FALSE only one branch of a split track 
     is taken into account}
-  \item{return_indices}{If TRUE the items of the array are the object indices}
+  \item{feature_names}{
+list of feature names e.g. \code{c("n2_avg", "n2_stddev", "roisize")} for mean 
+intensity, standard deviation of the intensity and the size of the object. See
+\code{\link{C5FeatureNames}} to obtain a list of feature names.
 }
-\value{\code{Returns a 2x2 array}}
-\author{Rudolf Hoefler <rudolf.hoefler@imba.oeaw.ac.at>}\seealso{
+\author{Rudolf Hoefler <rudolf.hoefler@imba.oeaw.ac.at>}
+\seealso{
   \code{\link{C5Close}},
   \code{\link{C5FileInfo}},
   \code{\link{C5Plates}},
