@@ -2,7 +2,7 @@
 \alias{C5ClassifierDefinition}
 \title{Read the classifier definition from the file.}
 \usage{
-classdef <- C5ClassifierDefinition(ch5file, channel_region, ...)
+classdef <- C5ClassifierDefinition(ch5file, channel_region)
 }
 \arguments{
   \item{ch5file}{\code{\link{CellH5}} instance}

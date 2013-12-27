@@ -5,7 +5,7 @@
 Read features for a particular channel-region
 }
 \usage{
-features <- C5FeaturesNames(ch5file, channel_region, feature_names, frame=NULL, ...)
+features <- C5FeaturesNames(ch5file, channel_region, feature_names, frame=NULL)
 }
 \arguments{
   \item{postions}{\code{Item of \link{C5Positions}}}
