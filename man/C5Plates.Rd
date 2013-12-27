@@ -1,11 +1,12 @@
 \name{C5Plates}
 \alias{C5Plates}
-\title{return a list of plates contained in the file}
+\title{Get a list of processed plates names from the file.}
 \usage{plates <- C5Plates(ch5file)}
 \arguments{
   \item{ch5file}{ \code{\link{CellH5}} instance }
   
 }
+\value{Returns a list of strings}
 \author{Rudolf Hoefler <rudolf.hoefler@imba.oeaw.ac.at>}
 \seealso{
   \code{\link{C5Close}},

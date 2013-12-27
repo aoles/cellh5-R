@@ -1,6 +1,6 @@
 \name{C5ChannelRegions}
 \alias{C5ChannelRegions}
-\title{Information about the segmentation regions
+\title{List of the segmentation regions
 }
 \description{
 Retruns a list of the segmentation regions (channel-region pairs).
@@ -12,7 +12,7 @@ cheannel_regions <- C5ChannelRegions(ch5file)
 \arguments{
   \item{ch5file}{ \code{\link{CellH5}} instance }
 }
-\note{There are different color channel mapped to primary, secondary or tertiary 
+\note{There are different color channels mapped to primary, secondary or tertiary 
 channel. Each channel can have different regions e.g. exanded or outside. 
 A channel-region pair is encoded as string consisting of the channel name and 
 region name, separated by two underscores e.g. \code{primary__primary}}

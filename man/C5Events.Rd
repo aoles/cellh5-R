@@ -3,7 +3,7 @@
 \title{Read out the tracks found by the event selection.}
 \description{Read out the tracks found by the event selection.}
 \usage{
-C5Events(ch5file, position, channel_region, include_branches = TRUE, return_indices = FALSE, ...)
+events <- C5Events(ch5file, position, channel_region, include_branches = TRUE, return_indices = FALSE, ...)
 }
 
 \arguments{

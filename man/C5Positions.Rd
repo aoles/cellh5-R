@@ -1,6 +1,6 @@
 \name{C5Positions}
 \alias{C5Positions}
-\title{Returns a list of positions (hdf5 groups)}
+\title{Get a list of positions}
 \description{Return a list of hdf5 groups for further processing. }
 \usage{C5Positions(ch5file, plate, ...)}
 \arguments{

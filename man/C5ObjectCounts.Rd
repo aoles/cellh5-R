@@ -3,7 +3,7 @@
 \title{Read out the number of cells per frame and class label}
 \description{Returns a data.frame of the object counts. The column names correspond
 to the class names, rows to the frame numbers.}
-\usage{C5ObjectCounts(ch5file, position, channel_region)}
+\usage{counts <- C5ObjectCounts(ch5file, position, channel_region)}
 
 \arguments{
   \item{ch5file}{\code{\link{CellH5}} instance}

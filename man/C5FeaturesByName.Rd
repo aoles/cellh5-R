@@ -1,16 +1,18 @@
 \name{C5FeaturesByName}
 \alias{C5FeaturesByName}
-\title{Read out the features}
+\title{Read features}
 \description{
-Read out the features for a particular channel-region
+Read features for a particular channel-region
 }
 \usage{
-C5FeaturesNames(ch5file, channel_region, feature_names, frame=NULL, ...)
+features <- C5FeaturesNames(ch5file, channel_region, feature_names, frame=NULL, ...)
 }
 \arguments{
   \item{postions}{\code{Item of \link{C5Positions}}}
   \item{channel_region}{A channel-region pair e.g. \code{primary__primary}}
-  \itme{feature_names}{List of feature names}
+  \item{feature_names}{List of feature names}
+  \item{frames}{List of frames to take into account. Default is \code{NULL} i.e. 
+  all frames are taken into account.}
 }
 \value{Returns an array
 }

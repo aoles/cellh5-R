@@ -6,21 +6,22 @@ matrices. Each row is a track, each column is a frame. The 3rd dimenension is th
 feature vector for a particular object.
 }
 \usage{
-C5EventFeatures(ch5file, position, channel_region, include_branches = TRUE, feature_names = NULL, ...)
+event_features <- C5EventFeatures(ch5file, position, channel_region, include_branches = TRUE, feature_names = NULL)
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{ch5file}{ \code{\link{CellH5}} instance }
   \item{postions}{\code{Item of \link{C5Positions}}}
   \item{channel_region}{A channel-region pair e.g. \code{primary__primary}}
   \item{include_branches}{If FALSE only one branch of a split track 
-    is taken into account}
+    is taken into account.}
   \item{feature_names}{
 list of feature names e.g. \code{c("n2_avg", "n2_stddev", "roisize")} for mean 
 intensity, standard deviation of the intensity and the size of the object. See
 \code{\link{C5FeatureNames}} to obtain a list of feature names.
 }
+}
 \author{Rudolf Hoefler <rudolf.hoefler@imba.oeaw.ac.at>}
+
 \seealso{
   \code{\link{C5Close}},
   \code{\link{C5FileInfo}},

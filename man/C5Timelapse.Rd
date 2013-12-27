@@ -8,7 +8,7 @@ Read the timelapse table as data.frame for a given position
 timelapse <- C5Timelapse(position)
 }
 \arguments{
-  \item{position}{\code{item of \link{C5Positions}}}
+  \item{position}{item of \code{\link{C5Positions}}}
 }
 \author{Rudolf Hoefler <rudolf.hoefler@imba.oeaw.ac.at>}
 \seealso{

@@ -6,7 +6,7 @@
 The columns are \code{frame_index} and \code{object_label}. The rows are simply indices.
 }
 \usage{
-C5ObjectLabels(position, channel_region, frames = NULL)
+C5ObjectLabels(position, channel_region)
 }
 \arguments{
   \item{position}{\code{item of \link{C5Positions}}}
