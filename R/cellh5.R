@@ -174,7 +174,7 @@ setMethod("C5ClassifierDefinition", "CellH5", function(ch5file, channel_region) 
 })
           
 setMethod("C5ChannelRegions", "CellH5", function(ch5file) {
-    return(names(ch5file@global_def[["feature"]]))
+    return(as.list(names(ch5file@global_def[["feature"]])))
 })
 
 setMethod("C5Positions", "CellH5", function(ch5file, plate) {
@@ -242,7 +242,6 @@ setMethod("C5Predictions", "CellH5", function(ch5file, position, channel_region)
   
 
   labels_ <- list()
-  # print(label_idx)
   for (i in 1:length(classdef$label)) {
     labels_[which(label_idx == rToCIndex(i))] <- classdef$name[[i]]
   }
