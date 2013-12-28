@@ -241,10 +241,11 @@ setMethod("C5Predictions", "CellH5", function(ch5file, position, channel_region)
                                    channel_region))$label_idx
   
 
-  labels_ <- list()
+  labels_ <- array()
   for (i in 1:length(classdef$label)) {
     labels_[which(label_idx == rToCIndex(i))] <- classdef$name[[i]]
   }
+
   return(labels_)         
 })
 
