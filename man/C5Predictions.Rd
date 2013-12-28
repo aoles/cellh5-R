@@ -11,7 +11,7 @@ predictions <- C5Predictions(ch5file, position, channel_region)
   \item{channel_region}{A channel-region pair e.g. \code{primary__primary}}
 }
 \value{
-  \code{C5Predcitons} returns a list of the predicted class labels (list of strings)
+  \code{C5Predcitons} returns an array of the predicted class labels (array of strings)
 }
 \author{Rudolf Hoefler <rudolf.hoefler@imba.oeaw.ac.at>}
 \seealso{
