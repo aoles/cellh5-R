@@ -44,7 +44,7 @@
 The cellh5-source code is available on \href{https://github.com/CellH5/C5/archive/master.zip}{github}. Download and unpack the zip file. 
 
 <<loadSource>>=
-source("/Users/hoefler/sandbox/demo_cellh5/cellh5/cellh5.R")
+source("/Users/hoefler/sandbox/demo_cellh5/R/cellh5.R")
 @
 
 
