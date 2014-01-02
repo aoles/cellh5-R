@@ -9,3 +9,6 @@ data
 *~
 .Rapp.history
 .Rbuildignore
+*.tex
+*.gz
+*.log
