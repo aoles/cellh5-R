@@ -7,17 +7,30 @@
 \RequirePackage{amsfonts,amsmath,amstext,amssymb,amscd}
 \usepackage{graphicx}
 \usepackage{verbatim}
-\usepackage{hyperref}
 \usepackage{color}
 \usepackage{subfig}
 \definecolor{darkblue}{rgb}{0.2,0.0,0.4}
+
+\usepackage[bookmarksopen]{hyperref}
+
+\hypersetup{%
+    pdftitle={CellH5: An R-package for easy access to ch5-files},
+    pdfauthor={H\"ofler Rudolf},
+    pdfkeywords={cellh5, CellH5, hdf5, hdf},
+    bookmarksnumbered,
+    % pdfstartview={},
+    urlcolor=blue,
+    breaklinks=true,
+    colorlinks=true,
+    linkcolor=blue,
+}
 
 \topmargin -1.5cm
 \oddsidemargin -0cm   % read Lamport p.163
 \evensidemargin -0cm  % same as oddsidemargin but for left-hand pages
 \textwidth 17cm
 \textheight 24.5cm
-% \parindent0em
+\parindent0em
 
 \newcommand{\lib}[1]{{\mbox{\normalfont\textsf{#1}}}}
 \newcommand{\file}[1]{{\mbox{\normalfont\textsf{'#1'}}}}
@@ -37,14 +50,115 @@
 \begin{document}
 \SweaveOpts{concordance=TRUE}
 \title{CellH5: An R-package for easy access to ch5-files}
+%\author{Rudolf H\"ofler, Christoph Sommer, \newline Michael Held, Bernd Fischer, Wolfgang Huber and Daniel Gerlich}
 
 \maketitle
 
-\section{Download}
-The cellh5-source code is available on \href{https://github.com/CellH5/C5/archive/master.zip}{github}. Download and unpack the zip file. 
+\section{Getting started}
+The cellh5-source code is available on \href{https://github.com/CellH5/C5/archive/master.zip}{github}. 
+Download and unpack the zip file. For installation follow the instructions in the README.md. 
+After installation load the package:
 
-<<loadSource>>=
-source("/Users/hoefler/sandbox/demo_cellh5/R/cellh5.R")
+<<loadSource>>==
+library(cellh5)
+
+# to show the help page
+help(CellH5)
+@
+Open a file (note: the source package does not include demo data).
+ 
+<<openfile>>==
+c5f <- CellH5("../data/_all_positions.ch5")
+@
+
+\section{Convenience functions}
+All methods start with the prefix \textbf{C5}. For detailed information of each
+single function type in the \textit{R-terminal} \texttt{help(<C5FunctionName>)}
+or \texttt{?<C5FunctionName>}. Below is a list of available functions.
+\begin{enumerate}
+  \item \texttt{CellH5}
+  \item \texttt{C5Close}
+  \item \texttt{C5FileInfo}
+  \item \texttt{C5Plates}
+  \item \texttt{C5Positions}
+  \item \texttt{C5Timelapse}
+  \item \texttt{C5TimeIdx}
+  \item \texttt{C5ObjectCounts}
+  \item \texttt{C5OjbectLabels}
+  \item \texttt{C5ReadImage}
+  \item \texttt{C5ChannelRegion}
+  \item \texttt{C5ClassifierDefinition}
+  \item \texttt{C5FeatureNames}
+  \item \texttt{C5FeaturesByName}
+  \item \texttt{C5Events}
+  \item \texttt{C5EventFeatures}
+  \item \texttt{C5Center}
+  \item \texttt{C5BoundingBoxes}
+  \item \texttt{C5Orientation}
+  \item \texttt{C5Preditions}
+  \item \texttt{C5PredictionsProbabilities}
+\end{enumerate}
+
+\section{Reading basic information}
+Read out specific information such as plate names, segmentation (channel-regions pairs), 
+positions or timelapse tables.
+
+<<loadSource>>==
+# segmentation information 
+chreg <- C5ChannelRegions(c5f)
+plates <- C5Plates(c5f)
+positions <- C5Positions(c5f, plates[[1]])
+timelapse <- C5Timelapse(positions[[1]])
+# available features for a particular segmentation region (primary__primary)
+clfeatures <- C5FeatureNames(c5f, chreg[[1]])
+@
+Print data to the console:
+<<loadSource>>==
+head(timelapse)
+# plate names
+print(plates)
+@
+
+\subsection{Example: object counts}
+Read the number of cells per frame and class name:
+<<loadSource>>==
+object_counts <- C5ObjectCounts(c5f, positions$W0_P0013, "primary__primary")
+head(object_counts)
+@
+
+\subsection{Example: read image}
+Be careful and don't overwrite the built-in function \texttt{image}. Set the option
+\texttt{useRaster=TRUE} to increase the performance.
+<<loadSource>>==
+colors = grey.colors(256)
+image_ <- C5ReadImage(c5f, positions$W0_P0013, "primary__primary", frame=1, zstack=1)
+#plot the image
+image(image_, col=colors, axes=FALSE, useRaster=TRUE)
+@
+
+%%<<loadSource>>==
+%%
+%%# see available feature
+%%main_features = c("n2_avg", "n2_stddev", "roisize")
+%%
+%%features <- C5FeaturesByName(c5f, positions[[1]], "primary__primary", main_features)
+%%object_ids <- C5ObjectLabels(positions[[1]], "primary__primary")
+%%center <- C5Center(positions$W0_P0013, "primary__primary")
+%%bbox <- C5BoundingBoxes(positions$W0_P0013, "primary__primary")
+%%orientation <- C5Orientation(positions$W0_P0013, "primary__primary")
+%%predictions <- C5Predictions(c5f, positions$W0_P0013, "primary__primary")
+%%probs <- C5PredictionProbabilities(c5f, positions$W0_P0013, "primary__primary")
+%%events <- C5Events(c5f, positions[[1]], "primary__primary",
+%%                    include_branches=TRUE, return_indices=TRUE)
+%%event_features <- C5EventFeatures(c5f, positions[[1]], "primary__primary", 
+%%                                    TRUE, main_features)
+%% @
+
+\section{File introspection}
+Finally, the method \texttt{C5FileInfo} gives you an overview of the file contents. 
+Alternatively you can use \href{http://www.hdfgroup.org/products/java/hdf-java-html/hdfview/}{HDFView}.
+<<loadSource>>==
+C5FileInfo(c5f)
 @
 
 
