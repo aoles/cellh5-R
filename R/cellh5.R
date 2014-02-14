@@ -64,6 +64,14 @@ setGeneric("C5HasEvents", function(position) {
     return(TRUE)}
 })
 
+setGeneric("C5HasTimelapse", function(position) {
+  if (H5Lexists(position, name="image/time_lapse")) {
+    return(TRUE)
+  } else {
+    return(FALSE)
+  }
+})
+
 # XXX remove standardGenerics if possible
 setGeneric("C5Close", function(ch5file) {
   H5Fclose(ch5file@fid)})
@@ -90,7 +98,11 @@ setGeneric("C5FeatureNames", function(ch5file, channel_region, ...) {
   standardGeneric("C5FeatureNames")})
 
 setGeneric("C5Timelapse", function(position) {
-  return(ch5read(position, name="image/time_lapse"))
+  if (C5HasTimelapse(position)) {
+    return(ch5read(position, name="image/time_lapse"))
+  } else {
+    return(NULL)
+  }
 })
 
 setGeneric("C5TimeIdx", function(position, channel_region) {
@@ -98,56 +110,34 @@ setGeneric("C5TimeIdx", function(position, channel_region) {
   if (length(tidx) == 0) {
     return(NULL)
   } else {
-    return(tidx)
+    return(cToRIndex(tidx))
   }
 })
 
-setGeneric("C5Orientation", function(position, channel_region, frames=NULL) {
+setGeneric("C5Orientation", function(position, channel_region) {
   if (!C5HasObjects(position, channel_region)) {
     return(NULL)
   } 
-  
   center = ch5read(position, name=sprintf('feature/%s/orientation', channel_region))
-  if (is.null(frames)) {
-    df <- data.frame(center)
-  } else { 
-    time_idx <- C5TimeIdx(position, channel_region)   
-    frame_idx <- which(time_idx %in% frames)
-    df <- data.frame(center[frame_idx, ])
-  }
+  df <- data.frame(center)
   return(df)
 })
 
-setGeneric("C5BoundingBoxes", function(position, channel_region, frames=NULL) {
+setGeneric("C5BoundingBoxes", function(position, channel_region) {
   if (!C5HasObjects(position, channel_region)) {
     return(NULL)
   } 
-  
   center = ch5read(position, name=sprintf('feature/%s/bounding_box', channel_region))
-  
-  if (is.null(frames)) {
-    df <- data.frame(center)
-  } else { 
-    time_idx <- C5TimeIdx(position, channel_region)   
-    frame_idx <- which(time_idx %in% frames)
-    df <- data.frame(center[frame_idx, ])
-  }
+  df <- data.frame(center)
   return(df)
 })
 
-setGeneric("C5Center", function(position, channel_region, frames=NULL) {
+setGeneric("C5Center", function(position, channel_region) {
   if (!C5HasObjects(position, channel_region)) {
     return(NULL)
   } 
   center = ch5read(position, name=sprintf('feature/%s/center', channel_region))
-            
-  if (is.null(frames)) {
-    df <- data.frame(center)
-  } else { 
-    time_idx <- C5TimeIdx(position, channel_region)   
-    frame_idx <- which(time_idx %in% frames)
-    df <- data.frame(center[frame_idx, ])
-  }
+  df <- data.frame(center)
   return(df)
 })
 
@@ -184,15 +174,26 @@ setGeneric("C5EventFeatures", function(ch5file, position, channel_region,
 })
 
 setMethod("C5ObjectCounts", "CellH5", function(ch5file, position, channel_region) {
+  if (!C5HasObjects(position, channel_region)) {
+    return(NULL)
+  }
+  
   classdef <- C5ClassifierDefinition(ch5file, channel_region)  
   time_idx <- C5TimeIdx(position, channel_region)
   label_idx <- ch5read(position,
                       name=sprintf("feature/%s/object_classification/prediction",
                                    channel_region))$label_idx
   
-  time_idx <- as.list(cToRIndex(time_idx))
   label_idx <- as.list(cToRIndex(label_idx))
-  frames <- C5Timelapse(position)$frame
+  
+  # first case -> single timepoint
+  # second case -> timelapse
+  if (length(unique(time_idx)) == 1) {
+    frames <- array(unique(time_idx))
+  } else {
+    frames <- C5Timelapse(position)$frame
+  }
+
   object_counts = data.frame()
   for (i in 1:length(frames)) {
     frame = frames[[i]]
@@ -207,24 +208,17 @@ setMethod("C5ObjectCounts", "CellH5", function(ch5file, position, channel_region
 })
 
 setMethod("C5FeaturesByName", "CellH5", 
-          function(ch5file, position, channel_region, feature_names, frames=NULL) {  
+          function(ch5file, position, channel_region, feature_names) {  
     if (!C5HasObjects(position, channel_region)) {
       return(NULL)
     } 
-    
     features = ch5read(position, name=sprintf('feature/%s/object_features', channel_region))
     ftr_idx = match(feature_names, C5FeatureNames(ch5file, channel_region))
-             
-    if (is.null(frames)) {
-      features <- features[ftr_idx, ] 
-    } else {
-      time_idx <- C5TimeIdx(position, channel_region)
-      frame_idx <- which(time_idx %in% frames)
-      features <- features[ftr_idx, frame_idx]
-    }
+    features <- features[ftr_idx, ] 
     df <- data.frame(t(features))
     colnames(df) <- feature_names
     return(df)
+    
   })
        
 setMethod("C5FeatureNames", "CellH5", function(ch5file, channel_region) {
@@ -274,11 +268,6 @@ setMethod("C5Plates", "CellH5",
             return(plates)
           })
           
-setMethod("C5Timelapse", "CellH5",
-          function(position) {
-              return(ch5read(position, name="image/time_lapse"))
-          })
-
 setMethod("C5FileInfo", "CellH5",
           function(ch5file) {
             print(paste("File: ", ch5file@filename))
