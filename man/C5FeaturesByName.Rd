@@ -12,7 +12,7 @@ features <- C5FeaturesNames(ch5file, channel_region, feature_names)
   \item{position}{\code{Item of \link{C5Positions}}}
   \item{channel_region}{A channel-region pair e.g. \code{primary__primary}}
   \item{feature_names}{List of feature names}}
-}
+
 \value{Returns an array
 }
 \author{Rudolf Hoefler <rudolf.hoefler@imba.oeaw.ac.at>}
