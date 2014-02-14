@@ -8,7 +8,6 @@ data
 *.pdf
 *~
 .Rapp.history
-.Rbuildignore
 *.tex
 *.gz
 *.log
