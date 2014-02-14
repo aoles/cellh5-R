@@ -1,7 +1,7 @@
 \name{C5TimeIdx}
 \alias{C5TimeIdx}
 \title{Return a list of frame numbers for each object.}
-\description{Returns a list of frame indices for each object. The lenght of the 
+\description{Returns a list of frame indices for each object. The lenght of the
 list is  the total number of objects found in a particular position and channel-region.
 The frame index can be used to look up in the timelapse table (\code{\link{C5Timelapse}}).
 The function returns \code{NULL} if no time indices are available.}
@@ -32,4 +32,7 @@ The function returns \code{NULL} if no time indices are available.}
   \code{\link{C5Orientation}},
   \code{\link{C5Predictions}},
   \code{\link{C5PredictionProbabilities}},
+  \code{\link{C5HasEvents}},
+  \code{\link{C5HasObjects}},
+  \code{\link{C5HasTimelapse}},
   }

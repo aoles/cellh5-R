@@ -2,16 +2,16 @@
 \alias{CellH5}
 \title{S4 class for easy access of ch5 files.}
 \description{
-This package provides a S4 class and various convenience functions to read the data 
+This package provides a S4 class and various convenience functions to read the data
 from \code{*.ch5} files.
 }
 \usage{
-c5f <- CellH5(filepath) 
+c5f <- CellH5(filepath)
 }
 \value{
  \code{Returns a \link{CellH5}} instance
 }
-\note{CellH5 is a specialized data model for the \code{hdf5} format. Therefore 
+\note{CellH5 is a specialized data model for the \code{hdf5} format. Therefore
 one can use all standard tools to inspect the files e.g. HDFView}
 \arguments{
   \item{file}{ absolute or relative path to and ch5 file (or hdf5 file)}}
@@ -37,4 +37,7 @@ one can use all standard tools to inspect the files e.g. HDFView}
   \code{\link{C5Orientation}},
   \code{\link{C5Predictions}},
   \code{\link{C5PredictionProbabilities}},
+  \code{\link{C5HasEvents}},
+  \code{\link{C5HasObjects}},
+  \code{\link{C5HasTimelapse}},
   }

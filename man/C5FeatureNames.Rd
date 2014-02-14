@@ -36,4 +36,7 @@ feature_names <- C5FeatureNames(ch5file, channel_region)
   \code{\link{C5Orientation}},
   \code{\link{C5Predictions}},
   \code{\link{C5PredictionProbabilities}},
+  \code{\link{C5HasEvents}},
+  \code{\link{C5HasObjects}},
+  \code{\link{C5HasTimelapse}},
   }

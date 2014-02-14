@@ -1,10 +1,21 @@
-\name{C5Close}
-\alias{C5Close}
-\title{Close cellh5 instance and release hdf5 resources.}
-\usage{C5Close(ch5file)}
-\arguments{
-  \item{ch5file}{ \code{\link{CellH5}} instance to be released.}
+\name{C5HasObjects}
+\alias{C5HasObjects}
+%- Also NEED an '\alias' for EACH other topic documented here.
+\title{Checks if a position contains objects found by segmentation.
 }
+\description{
+Checks if a position contains objects found by segmentation.
+}
+\usage{
+if (C5HasObjects(position, channel_region) {
+  print("Current position contains objects")
+  }
+}
+\arguments{
+  \item{position}{\code{Item of \link{C5Positions}}}
+  \item{channel_region}{A channel-region pair e.g. \code{primary__primary}}
+}
+\value{The return value is boolean.}
 \author{Rudolf Hoefler <rudolf.hoefler@imba.oeaw.ac.at>}
 \seealso{
   \code{\link{C5Close}},

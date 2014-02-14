@@ -4,7 +4,7 @@
 \usage{plates <- C5Plates(ch5file)}
 \arguments{
   \item{ch5file}{ \code{\link{CellH5}} instance }
-  
+
 }
 \value{Returns a list of strings}
 \author{Rudolf Hoefler <rudolf.hoefler@imba.oeaw.ac.at>}
@@ -29,4 +29,7 @@
   \code{\link{C5Orientation}},
   \code{\link{C5Predictions}},
   \code{\link{C5PredictionProbabilities}},
+  \code{\link{C5HasEvents}},
+  \code{\link{C5HasObjects}},
+  \code{\link{C5HasTimelapse}},
   }

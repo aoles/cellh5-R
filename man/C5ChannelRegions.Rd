@@ -12,9 +12,9 @@ cheannel_regions <- C5ChannelRegions(ch5file)
 \arguments{
   \item{ch5file}{ \code{\link{CellH5}} instance }
 }
-\note{There are different color channels mapped to primary, secondary or tertiary 
-channel. Each channel can have different regions e.g. exanded or outside. 
-A channel-region pair is encoded as string consisting of the channel name and 
+\note{There are different color channels mapped to primary, secondary or tertiary
+channel. Each channel can have different regions e.g. exanded or outside.
+A channel-region pair is encoded as string consisting of the channel name and
 region name, separated by two underscores e.g. \code{primary__primary}}
 
 \author{Rudolf Hoefler <rudolf.hoefler@imba.oeaw.ac.at>}
@@ -39,4 +39,7 @@ region name, separated by two underscores e.g. \code{primary__primary}}
   \code{\link{C5Orientation}},
   \code{\link{C5Predictions}},
   \code{\link{C5PredictionProbabilities}},
+  \code{\link{C5HasEvents}},
+  \code{\link{C5HasObjects}},
+  \code{\link{C5HasTimelapse}},
   }

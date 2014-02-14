@@ -17,7 +17,8 @@ events <- C5Events(ch5file, position, channel_region, include_branches = TRUE, r
   \item{return_indices}{If TRUE the items of the array are the object indices}
 }
 \value{\code{Returns a 2x2 array}}
-\author{Rudolf Hoefler <rudolf.hoefler@imba.oeaw.ac.at>}\seealso{
+\author{Rudolf Hoefler <rudolf.hoefler@imba.oeaw.ac.at>}
+\seealso{
   \code{\link{C5Close}},
   \code{\link{C5FileInfo}},
   \code{\link{C5Plates}},
@@ -38,4 +39,8 @@ events <- C5Events(ch5file, position, channel_region, include_branches = TRUE, r
   \code{\link{C5Orientation}},
   \code{\link{C5Predictions}},
   \code{\link{C5PredictionProbabilities}},
+  \code{\link{C5HasEvents}},
+  \code{\link{C5HasObjects}},
+  \code{\link{C5HasTimelapse}},
+
   }

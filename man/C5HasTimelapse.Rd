@@ -1,10 +1,20 @@
-\name{C5Close}
-\alias{C5Close}
-\title{Close cellh5 instance and release hdf5 resources.}
-\usage{C5Close(ch5file)}
-\arguments{
-  \item{ch5file}{ \code{\link{CellH5}} instance to be released.}
+\name{C5HasTimelapse}
+\alias{C5HasTimelapse}
+\title{Checks if a position contains timelapse information.
 }
+\description{
+Checks if a position contains timelaspe information.
+}
+\usage{
+if (C5HasTimelapse(position, channel_region) {
+  print("Current position contains timelapse information")
+  }
+}
+\arguments{
+  \item{position}{\code{Item of \link{C5Positions}}}
+  \item{channel_region}{A channel-region pair e.g. \code{primary__primary}}
+}
+\value{The return value is boolean.}
 \author{Rudolf Hoefler <rudolf.hoefler@imba.oeaw.ac.at>}
 \seealso{
   \code{\link{C5Close}},

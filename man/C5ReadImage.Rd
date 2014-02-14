@@ -35,4 +35,7 @@ C5ReadImage(ch5file, position, channel_region, frame_index, zstack, label_image 
   \code{\link{C5Orientation}},
   \code{\link{C5Predictions}},
   \code{\link{C5PredictionProbabilities}},
+  \code{\link{C5HasEvents}},
+  \code{\link{C5HasObjects}},
+  \code{\link{C5HasTimelapse}},
   }

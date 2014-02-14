@@ -2,7 +2,7 @@
 \alias{C5FeaturesByName}
 \title{Read features}
 \description{
-Read features for a particular channel-region. The function returns \code{NULL} 
+Read features for a particular channel-region. The function returns \code{NULL}
 if the position contains no features.
 }
 \usage{
@@ -37,4 +37,7 @@ features <- C5FeaturesNames(ch5file, channel_region, feature_names)
   \code{\link{C5Orientation}},
   \code{\link{C5Predictions}},
   \code{\link{C5PredictionProbabilities}},
+  \code{\link{C5HasEvents}},
+  \code{\link{C5HasObjects}},
+  \code{\link{C5HasTimelapse}},
   }

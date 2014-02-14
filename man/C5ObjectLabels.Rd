@@ -2,7 +2,7 @@
 \alias{C5ObjectLabels}
 \title{List of all Object found in the timelapse
 }
-\description{Returns a data.frame of all object found in the timelapse. 
+\description{Returns a data.frame of all object found in the timelapse.
 The columns are \code{frame_index} and \code{object_label}. The rows are simply indices.
 The function returns \code{NULL} if the position contains no object labels.
 }
@@ -35,4 +35,7 @@ C5ObjectLabels(position, channel_region)
   \code{\link{C5Orientation}},
   \code{\link{C5Predictions}},
   \code{\link{C5PredictionProbabilities}},
+  \code{\link{C5HasEvents}},
+  \code{\link{C5HasObjects}},
+  \code{\link{C5HasTimelapse}},
   }
