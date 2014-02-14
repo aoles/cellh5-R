@@ -1,7 +1,8 @@
 ## C5
 
 
-C5 is a small R-library that provides an S4-class for easy access of cellh5-files. It depends on the [bioconductor](http://www.bioconductor.org)-package, especially the the `rhdf5` package, which is part of bioconductor.
+C5 is a small R-library that provides an S4-class for easy access of cellh5-files. It depends on the [bioconductor](http://www.bioconductor.org)-package, especially the the `rhdf5` package, which is part of bioconductor. You need to install the development version of [rhdf5 2.7.4](http://www.bioconductor.org/packages/devel/bioc/html/rhdf5.html). Older versions do not read data correctly from file. 
+
 
 
 #### Installation
