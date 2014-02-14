@@ -8,6 +8,7 @@ ch5read <- function(ch5loc, name, index=NULL,
                     start=NULL, stride=NULL, block=NULL, count=NULL,
                     compoundAsDataFrame = TRUE, callGeneric = TRUE,
                     read.attributes = TRUE) {
+  
   if (H5Lexists(ch5loc, name)){
     ret <- h5read(ch5loc, name, index=index,
                   start=start, stride=stride, block=block, count=count,
@@ -55,8 +56,8 @@ setGeneric("C5HasObjects", function(position, channel_region) {
     return(TRUE)}
 })
 
-setGeneric("C5HasEvents", function(position, channel_region) {
-  oid <- ch5read(pos, name="object/event")$obj_id
+setGeneric("C5HasEvents", function(position) {
+  oid <- ch5read(position, name="object/event")$obj_id
   if (length(oid) == 0) {
     return(FALSE)
   } else { 
@@ -387,9 +388,10 @@ setMethod("C5Events", "CellH5", function(ch5file, position, channel_region,
 
 setMethod("C5EventFeatures", "CellH5", function(ch5file, position, channel_region, 
                                                 include_branches=TRUE, feature_names=NULL) {
-  if (!C5HasEvents(pos, channel_region)) {
+  if (!C5HasEvents(position)) {
     return(NULL)
   }
+  
   features <- C5FeaturesByName(ch5file, position, channel_region, feature_names)
   events <- C5Events(ch5file, position, channel_region, return_indices=TRUE)
 

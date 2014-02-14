@@ -2,8 +2,8 @@
 # 2013/12/07
 # rudolf.hoefler@gmail.com
 
-library(cellh5)
-
+#library(cellh5)
+source('R/cellh5.R')
 c5f <- CellH5("data/_all_positions.ch5")
 
 chreg <- C5ChannelRegions(c5f)
