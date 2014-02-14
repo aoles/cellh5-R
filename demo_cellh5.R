@@ -11,7 +11,7 @@ plates <- C5Plates(c5f)
 positions <- C5Positions(c5f, plates[[1]])
 tl = C5Timelapse(positions[[1]])
 clfeatures <- C5FeatureNames(c5f, primary)
-timelapse <- C5Timelapse(position)$frame
+
 # mean intensity, standard deviation, size
 main_features = c("n2_avg", "n2_stddev", "roisize")
 # main_features <- clfeatures[c(1,2,3)]
