@@ -1,13 +1,14 @@
 \name{C5Predictions}
 \alias{C5Predictions}
 \title{Read out the predicted class names.}
-\description{Read out the predicted class names of all object for a particular 
-  position and channel_region)}
+\description{Read out the predicted class names of all object for a particular
+  position and channel_region. The function returns \code{NULL} if the position
+  contains no class predictions.}
 \usage{
 predictions <- C5Predictions(ch5file, position, channel_region)
 }
 \arguments{
-  \item{postions}{Item of \code{\link{C5Positions}}}
+  \item{position}{Item of \code{\link{C5Positions}}}
   \item{channel_region}{A channel-region pair e.g. \code{primary__primary}}
 }
 \value{

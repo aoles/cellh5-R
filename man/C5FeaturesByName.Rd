@@ -2,17 +2,16 @@
 \alias{C5FeaturesByName}
 \title{Read features}
 \description{
-Read features for a particular channel-region
+Read features for a particular channel-region. The function returns \code{NULL} 
+if the position contains no features.
 }
 \usage{
-features <- C5FeaturesNames(ch5file, channel_region, feature_names, frame=NULL)
+features <- C5FeaturesNames(ch5file, channel_region, feature_names)
 }
 \arguments{
-  \item{postions}{\code{Item of \link{C5Positions}}}
+  \item{position}{\code{Item of \link{C5Positions}}}
   \item{channel_region}{A channel-region pair e.g. \code{primary__primary}}
-  \item{feature_names}{List of feature names}
-  \item{frames}{List of frames to take into account. Default is \code{NULL} i.e. 
-  all frames are taken into account.}
+  \item{feature_names}{List of feature names}}
 }
 \value{Returns an array
 }

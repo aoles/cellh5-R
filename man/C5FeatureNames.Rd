@@ -2,14 +2,14 @@
 \alias{C5FeatureNames}
 \title{Read out the feature names used for a particular classifier}
 \description{
-Read out the feature names used for a particular classifier which was setup for 
+Read out the feature names used for a particular classifier which was setup for
 particular channel-region
 }
 \usage{
 feature_names <- C5FeatureNames(ch5file, channel_region)
 }
 \arguments{
-  \item{postions}{\code{Item of \link{C5Positions}}}
+  \item{position}{\code{Item of \link{C5Positions}}}
   \item{channel_region}{A channel-region pair e.g. \code{primary__primary}}
 }
 \value{Returns an array

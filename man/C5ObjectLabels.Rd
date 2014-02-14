@@ -4,6 +4,7 @@
 }
 \description{Returns a data.frame of all object found in the timelapse. 
 The columns are \code{frame_index} and \code{object_label}. The rows are simply indices.
+The function returns \code{NULL} if the position contains no object labels.
 }
 \usage{
 C5ObjectLabels(position, channel_region)

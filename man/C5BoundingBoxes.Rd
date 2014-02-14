@@ -1,13 +1,13 @@
 \name{C5BoundingBoxes}
 \alias{C5BoundingBoxes}
 \title{Return the bounding boxes of the object.}
-\description{Return the bounding boxes of all objects for a particular position and channel-region.}
+\description{Return the bounding boxes of all objects for a particular position and channel-region.
+The function returns \code{NULL} if the position contains no bounding boxes.}
 \usage{
-bboxes <- C5BoundingBoxes(postion, channel_region, frames=NULL)}
+bboxes <- C5BoundingBoxes(position, channel_region)}
 \arguments{
-  \item{postions}{Item of \code{\link{C5Positions}}}
+  \item{position}{Item of \code{\link{C5Positions}}}
   \item{channel_region}{A channel-region pair e.g. \code{primary__primary}}
-  \item{frames}{List of frames numbers. Default is \code{NULL} meaning all available frames.}
 }
 \author{Rudolf Hoefler <rudolf.hoefler@imba.oeaw.ac.at>}
 \seealso{

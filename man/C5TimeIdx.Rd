@@ -1,8 +1,10 @@
 \name{C5TimeIdx}
 \alias{C5TimeIdx}
 \title{Return a list of frame numbers for each object.}
-\description{Returns a list of frame numbers for each object. The lenght of the 
-list is  the total number of objects found in a particular position and channel-region.}
+\description{Returns a list of frame indices for each object. The lenght of the 
+list is  the total number of objects found in a particular position and channel-region.
+The frame index can be used to look up in the timelapse table (\code{\link{C5Timelapse}}).
+The function returns \code{NULL} if no time indices are available.}
 \usage{tidx <- C5TimeIdx(position, channel_region)}
 \arguments{
   \item{position}{\code{item of \link{C5Positions}}}

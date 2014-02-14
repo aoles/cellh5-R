@@ -1,21 +1,22 @@
 \name{C5EventFeatures}
 \alias{C5EventFeatures}
 \title{Return the feature vector per track found by the event selection}
-\description{Returns a 3-dimensional array of features similar to the trajectory 
-matrices. Each row is a track, each column is a frame. The 3rd dimenension is the 
-feature vector for a particular object.
+\description{Returns a 3-dimensional array of features similar to the trajectory
+matrices. Each row is a track, each column is a frame. The 3rd dimenension is the
+feature vector for a particular object. The function returns
+\code{NULL} if the position contains no events.
 }
 \usage{
 event_features <- C5EventFeatures(ch5file, position, channel_region, include_branches = TRUE, feature_names = NULL)
 }
 \arguments{
   \item{ch5file}{ \code{\link{CellH5}} instance }
-  \item{postions}{\code{Item of \link{C5Positions}}}
+  \item{position}{\code{Item of \link{C5Positions}}}
   \item{channel_region}{A channel-region pair e.g. \code{primary__primary}}
-  \item{include_branches}{If FALSE only one branch of a split track 
+  \item{include_branches}{If FALSE only one branch of a split track
     is taken into account.}
   \item{feature_names}{
-list of feature names e.g. \code{c("n2_avg", "n2_stddev", "roisize")} for mean 
+list of feature names e.g. \code{c("n2_avg", "n2_stddev", "roisize")} for mean
 intensity, standard deviation of the intensity and the size of the object. See
 \code{\link{C5FeatureNames}} to obtain a list of feature names.
 }

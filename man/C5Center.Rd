@@ -1,13 +1,13 @@
 \name{C5Center}
 \alias{C5Center}
 \title{Return the centers of the object.}
-\description{Return the centers of the objects for a particular position and channel-region.}
+\description{Return the centers of the objects for a particular position and channel-region.
+The function returns \code{NULL} if the position contains no information about centers.}
 \usage{
-centers <- C5Centers(postion, channel_region, frames=NULL)}
+centers <- C5Centers(position, channel_region)}
 \arguments{
-  \item{postions}{Item of \code{\link{C5Positions}}}
+  \item{position}{Item of \code{\link{C5Positions}}}
   \item{channel_region}{A channel-region pair e.g. \code{primary__primary}}
-  \item{frames}{List of frames numbers. Default is \code{NULL} meaning all available frames.}
 }
 \author{Rudolf Hoefler <rudolf.hoefler@imba.oeaw.ac.at>}
 \seealso{

@@ -2,7 +2,8 @@
 \alias{C5ObjectCounts}
 \title{Read out the number of cells per frame and class label}
 \description{Returns a data.frame of the object counts. The column names correspond
-to the class names, rows to the frame numbers.}
+to the class names, rows to the frame numbers. The Function returns \code{NULL}
+if the position contains no objects.}
 \usage{counts <- C5ObjectCounts(ch5file, position, channel_region)}
 
 \arguments{
