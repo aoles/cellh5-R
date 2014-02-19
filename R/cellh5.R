@@ -46,6 +46,14 @@ CellH5 <- function(file=NA) {
   new("CellH5", filename=file, fid=H5Fopen(file), global_def=gdef, positions=list())
 }
 
+setGeneric("C5HasClassifiedObjects", function(position, channel_region) {
+  if (H5Lexists(position, name=sprintf("feature/%s/object_classification", channel_region))) {
+    return(TRUE)
+  } else {
+    return(FALSE)
+  }
+})
+  
 setGeneric("C5HasObjects", function(position, channel_region) {
   # unfortunately there is no meta data how many ojbects are found 
   # use the fk time index
@@ -71,6 +79,7 @@ setGeneric("C5HasTimelapse", function(position) {
     return(FALSE)
   }
 })
+
 
 # XXX remove standardGenerics if possible
 setGeneric("C5Close", function(ch5file) {
@@ -153,7 +162,7 @@ setGeneric("C5ObjectLabels", function(position, channel_region) {
   return(df)
 })
 
-setGeneric("C5Predictions", function(ch5file, position, channel_region, ...) {
+setGeneric("C5Predictions", function(ch5file, position, channel_region, asLabel=FALSE, ...) {
   standardGeneric("C5Predictions")})
 
 setGeneric("C5PredictionProbabilities", function(ch5file, position, channel_region, ...) {
@@ -172,9 +181,46 @@ setGeneric("C5EventFeatures", function(ch5file, position, channel_region,
                                 include_branches=TRUE, feature_names=NULL, ...) {
   standardGeneric("C5EventFeatures")
 })
+           
+setGeneric("C5ObjectDetails", function(ch5file, position, channel_region) {
+  standardGeneric("C5ObjectDetails")
+})
+
+setMethod("C5ObjectDetails", "CellH5", function(ch5file, position, channel_region) {
+  if (!C5HasObjects(position, channel_region)) {
+    return(NULL)
+  }
+  
+  tidx <- ch5read(position, name=sprintf("object/%s", channel_region))$time_idx
+  objid <- ch5read(position, name=sprintf("object/%s", channel_region))$obj_label_id
+  timelapse <- C5Timelapse(position)
+  features <- C5FeaturesByName(ch5file, position, channel_region, 
+                               c("n2_avg", "n2_stddev", "roisize"))
+
+  # map frame numbers according to timelapse table
+  frames = array(0, length(tidx))
+  for (i in 1:length(timelapse$frame)) {
+    frames[which(tidx == rToCIndex(i))] <- timelapse$frame[[i]]
+  }
+
+  # use empty arrays if no classifier is given
+  if (C5HasClassifiedObjects(position, channel_region)){
+    class_names <- C5Predictions(ch5file, position, channel_region)
+    class_labels <- C5Predictions(ch5file, position, channel_region, asLabels=TRUE)
+  } else {
+    class_names <- array(NA, length(frames))
+    class_labels <- array(NA, length(frames))
+  }
+  
+  df <- data.frame(cbind(frames, objid, class_names, class_labels, features))
+  colnames(df) <- c("frame", "ojb_id", "class_name", "class_label",
+                   "mean", "stddev", "size")
+  
+  return(df)
+})
 
 setMethod("C5ObjectCounts", "CellH5", function(ch5file, position, channel_region) {
-  if (!C5HasObjects(position, channel_region)) {
+  if (!(C5HasObjects(position, channel_region) & C5HasClassifiedObjects(position, channel_region))) {
     return(NULL)
   }
   
@@ -220,7 +266,7 @@ setMethod("C5FeaturesByName", "CellH5",
     return(df)
     
   })
-       
+
 setMethod("C5FeatureNames", "CellH5", function(ch5file, channel_region) {
     return(ch5file@global_def$feature[[channel_region]]$object_features$name)
   })
@@ -285,8 +331,9 @@ setMethod("C5FileInfo", "CellH5",
           }
         )
 
-setMethod("C5Predictions", "CellH5", function(ch5file, position, channel_region) {
-  if (!C5HasObjects(position, channel_region)) {
+setMethod("C5Predictions", "CellH5", function(ch5file, position, channel_region, 
+                                              asLabels=FALSE) {
+  if (!(C5HasObjects(position, channel_region) & C5HasClassifiedObjects(position, channel_region))) {
     return(NULL)
   }  
 
@@ -298,7 +345,11 @@ setMethod("C5Predictions", "CellH5", function(ch5file, position, channel_region)
 
   labels_ <- array()
   for (i in 1:length(classdef$label)) {
-    labels_[which(label_idx == rToCIndex(i))] <- classdef$name[[i]]
+    if (asLabels){
+      labels_[which(label_idx == rToCIndex(i))] <- classdef$label[[i]]
+    } else {
+      labels_[which(label_idx == rToCIndex(i))] <- classdef$name[[i]]
+    }
   }
 
   return(labels_)         
@@ -306,7 +357,7 @@ setMethod("C5Predictions", "CellH5", function(ch5file, position, channel_region)
 
 setMethod("C5PredictionProbabilities", "CellH5", 
           function(ch5file, position, channel_region) {
-  if (!C5HasObjects(position, channel_region)) {
+  if (!(C5HasObjects(position, channel_region) & C5HasClassifiedObjects(position, channel_region))) {
     return(NULL)
   }
   

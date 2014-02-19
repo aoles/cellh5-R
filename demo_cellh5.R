@@ -3,6 +3,7 @@
 # rudolf.hoefler@gmail.com
 
 library(cellh5)
+# source('R/cellh5.R')
 
 c5f <- CellH5("data/_all_positions.ch5")
 chreg <- C5ChannelRegions(c5f)
@@ -14,7 +15,7 @@ clfeatures <- C5FeatureNames(c5f, primary)
 
 # mean intensity, standard deviation, size
 main_features = c("n2_avg", "n2_stddev", "roisize")
-# main_features <- clfeatures[c(1,2,3)]
+main_features <- clfeatures[c(1,2,3)]
 
 # read out data, we need to check if there objects/cells found. The same applies
 # to the methods that read the event data. The checks are not mandatory since
@@ -30,6 +31,7 @@ if (C5HasObjects(positions[[1]], primary)) {
   orientation <- C5Orientation(positions$W0_P0013, primary)
   predictions <- C5Predictions(c5f, positions$W0_P0013, primary)
   probs <- C5PredictionProbabilities(c5f, positions$W0_P0013, primary)
+  details <- C5ObjectDetails(c5f, positions$W0_P0013, primary)
 }
 
 if (C5HasEvents(positions[[1]])) {
