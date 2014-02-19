@@ -4,7 +4,7 @@
 \title{Checks if a position contains events found by event selection.
 }
 \description{
-Checks if a position contains events found by event selection. The current version 
+Checks if a position contains events found by event selection. The current version
 of cellh5 does not support events from different channel regions (segmentation regions)
 }
 \usage{
@@ -41,4 +41,6 @@ if (C5HasEvents(position) {
   \code{\link{C5HasEvents}},
   \code{\link{C5HasObjects}},
   \code{\link{C5HasTimelapse}},
+  \code{\link{C5ObjectDetails}},
+ \code{\link{C5HasClassifiedObjects}},
   }

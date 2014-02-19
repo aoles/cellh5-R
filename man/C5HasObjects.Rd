@@ -41,4 +41,6 @@ if (C5HasObjects(position, channel_region) {
   \code{\link{C5HasEvents}},
   \code{\link{C5HasObjects}},
   \code{\link{C5HasTimelapse}},
+  \code{\link{C5ObjectDetails}},
+  \code{\link{C5HasClassifiedObjects}},
   }

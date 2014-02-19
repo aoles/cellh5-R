@@ -10,6 +10,7 @@ predictions <- C5Predictions(ch5file, position, channel_region)
 \arguments{
   \item{position}{Item of \code{\link{C5Positions}}}
   \item{channel_region}{A channel-region pair e.g. \code{primary__primary}}
+  \item{asLabels}{boolean - if true, the function returns class labels instead of class names}
 }
 \value{
   \code{C5Predcitons} returns an array of the predicted class labels (array of strings)
@@ -39,4 +40,6 @@ predictions <- C5Predictions(ch5file, position, channel_region)
   \code{\link{C5HasEvents}},
   \code{\link{C5HasObjects}},
   \code{\link{C5HasTimelapse}},
+  \code{\link{C5ObjectDetails}},
+  \code{\link{C5HasClassifiedObjects}},
   }

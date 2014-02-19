@@ -1,14 +1,21 @@
-\name{C5TimeIdx}
-\alias{C5TimeIdx}
-\title{Return a list of frame numbers for each object.}
-\description{Returns a list of frame indices for each object. The lenght of the
-list is  the total number of objects found in a particular position and channel-region.
-The frame index can be used to look up in the timelapse table (\code{\link{C5Timelapse}}).
-The function returns \code{NULL} if no time indices are available.}
-\usage{tidx <- C5TimeIdx(position, channel_region)}
+\name{C5ObjectDetails}
+\alias{C5ObjectDetails}
+\title{Read out detailed object table}
+
+\description{
+Read out table with columns in the following order: frame, obj_id, class_name,
+class_label, mean, stddev, size for all objects found by segmentation.
+}
+\usage{
+object_details <- C5ObjectDetails(ch5file, position, channel_region)
+}
 \arguments{
-  \item{position}{\code{item of \link{C5Positions}}}
+  \item{position}{Item of \code{\link{C5Positions}}}
   \item{channel_region}{A channel-region pair e.g. \code{primary__primary}}
+  \item{asLabels}{boolean - if true, the function returns class labels instead of class names}
+}
+\value{
+  \code{C5ObjectDetails} returns a data.frame
 }
 \author{Rudolf Hoefler <rudolf.hoefler@imba.oeaw.ac.at>}
 \seealso{
@@ -35,6 +42,7 @@ The function returns \code{NULL} if no time indices are available.}
   \code{\link{C5HasEvents}},
   \code{\link{C5HasObjects}},
   \code{\link{C5HasTimelapse}},
+  \code{\link{C5ObjectDetails}},
   \code{\link{C5ObjectDetails}},
   \code{\link{C5HasClassifiedObjects}},
   }
