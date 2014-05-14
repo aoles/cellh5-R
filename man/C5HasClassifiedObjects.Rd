@@ -2,11 +2,11 @@
 \alias{C5HasClassifiedObjects}
 \title{Returns \code{TRUE} if a position contains objects that has been labeled by a classifier.}
 \description{
-Returns \code{TRUE} if a position contains objects that has been labeled by a classifier. The function return \code{TRUE} or \code{FALSE} on the condition if a classifier has been applied to the objects, not if a classifier definition exists.
+Returns \code{TRUE} if a position contains objects that has been labeled by a classifier. The function returns \code{TRUE} or \code{FALSE} on the condition if a classifier has been applied to the objects, not if a classifier definition exists.
 }
 \usage{
 if (C5HasClassifiedObjects(position, channel_region) {
-  print("Current position contains objects")
+  print("Current position contains classified objects")
   }
 }
 \arguments{
