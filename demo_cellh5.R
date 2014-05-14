@@ -2,8 +2,8 @@
 # 2013/12/07
 # rudolf.hoefler@gmail.com
 
-library(cellh5)
-# source('R/cellh5.R')
+# library(cellh5)
+source('R/cellh5.R')
 
 c5f <- CellH5("data/_all_positions.ch5")
 chreg <- C5ChannelRegions(c5f)
@@ -32,6 +32,7 @@ if (C5HasObjects(positions[[1]], primary)) {
   predictions <- C5Predictions(c5f, positions$W0_P0013, primary)
   probs <- C5PredictionProbabilities(c5f, positions$W0_P0013, primary)
   details <- C5ObjectDetails(c5f, positions$W0_P0013, primary)
+  contours <- C5Contours(c5f, positions$W0_P0013, primary)
 }
 
 if (C5HasEvents(positions[[1]])) {
