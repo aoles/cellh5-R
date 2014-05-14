@@ -2,7 +2,8 @@
 # 2013/12/07
 # rudolf.hoefler@gmail.com
 
-library('rhdf5')
+library('rhdf5', verbose=FALSE)
+library('base64enc', verbose=FALSE)
 
 ch5read <- function(ch5loc, name, index=NULL,
                     start=NULL, stride=NULL, block=NULL, count=NULL,
@@ -127,8 +128,8 @@ setGeneric("C5Orientation", function(position, channel_region) {
   if (!C5HasObjects(position, channel_region)) {
     return(NULL)
   } 
-  center = ch5read(position, name=sprintf('feature/%s/orientation', channel_region))
-  df <- data.frame(center)
+  orientation = ch5read(position, name=sprintf('feature/%s/orientation', channel_region))
+  df <- data.frame(orientation)
   return(df)
 })
 
@@ -184,6 +185,10 @@ setGeneric("C5EventFeatures", function(ch5file, position, channel_region,
            
 setGeneric("C5ObjectDetails", function(ch5file, position, channel_region) {
   standardGeneric("C5ObjectDetails")
+})
+
+setGeneric("C5Contours", function(ch5file, position, channel_region) {
+ standardGeneric("C5Contours") 
 })
 
 setMethod("C5ObjectDetails", "CellH5", function(ch5file, position, channel_region) {
@@ -448,4 +453,21 @@ setMethod("C5EventFeatures", "CellH5", function(ch5file, position, channel_regio
     }
   }
   return(efeatures)
+})
+
+setMethod("C5Contours", "CellH5", function(ch5file, position, channel_region){
+  raw <- ch5read(position, name=sprintf('feature/%s/crack_contour', channel_region))
+  contours = list()
+  for (i in 1:length(raw)) {
+    cnt = strsplit(rawToChar(memDecompress(base64decode(raw[[i]]), type="g")), split=",")[[1]] 
+    npoints <- length(cnt)/2
+    polygon <- array(NA, dim=c(npoints, 2))
+  
+    for (j in 1:npoints) {
+       polygon[j, 1] <- as.numeric(cnt[[j*2-1]])
+       polygon[j, 2] <- as.numeric(cnt[[j*2]])
+    }
+    contours[[i]] <- polygon
+  }
+  return(contours)
 })
