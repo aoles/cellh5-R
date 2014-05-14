@@ -3,6 +3,7 @@
 # rudolf.hoefler@gmail.com
 
 library('rhdf5', verbose=FALSE)
+library("grid", verbose=FALSE)
 library('base64enc', verbose=FALSE)
 
 ch5read <- function(ch5loc, name, index=NULL,
@@ -30,6 +31,16 @@ cToRIndex <- function(list_) {
 rToCIndex <- function(list_) {
   return(list_ - 1)
 }
+
+# helper for grid.raster
+toRaster = function(x, cuts=-1:255+0.5, 
+                    colors = colorRampPalette(c("black","white"))(256)) {
+  cux =cut(x, cuts, include.lowest = TRUE, labels=FALSE)
+  rv = x
+  rv[] = colors[cux]
+  return(t(rv))
+}
+
 
 CellH5 <- setClass("CellH5", 
                    slots = c(filename="character", 
@@ -187,8 +198,13 @@ setGeneric("C5ObjectDetails", function(ch5file, position, channel_region) {
   standardGeneric("C5ObjectDetails")
 })
 
-setGeneric("C5Contours", function(ch5file, position, channel_region) {
+setGeneric("C5Contours", function(ch5file, position, channel_region, frame=NULL, ...) {
  standardGeneric("C5Contours") 
+})
+
+setGeneric("C5ContourImage", function(ch5file, position, channel_region, frame, 
+                                      zstack=1, filename=NULL, ...) {
+  standardGeneric("C5ContourImage")
 })
 
 setMethod("C5ObjectDetails", "CellH5", function(ch5file, position, channel_region) {
@@ -448,15 +464,23 @@ setMethod("C5EventFeatures", "CellH5", function(ch5file, position, channel_regio
       # it sucks, why is it not working!
       # efeatures[i,j, ] <- features[[events[[i, j]], ]]
       for (k in 1:dims[3]) {
-        efeatures[i,j,k] <- features[[events[[i, j]], k ]]
+        efeatures[i, j, k] <- features[[events[[i, j]], k ]]
       }
     }
   }
   return(efeatures)
 })
 
-setMethod("C5Contours", "CellH5", function(ch5file, position, channel_region){
+setMethod("C5Contours", "CellH5", function(ch5file, position, channel_region, frame=NULL){
   raw <- ch5read(position, name=sprintf('feature/%s/crack_contour', channel_region))
+  
+  # saves a lot of computing time due to the decoding of the string
+  if (!is.null(frame)) {
+    time_idx <- C5TimeIdx(position, channel_region)
+    frame_idx <- which(time_idx == frame)
+    raw <- raw[frame_idx]
+  }
+  
   contours = list()
   for (i in 1:length(raw)) {
     cnt = strsplit(rawToChar(memDecompress(base64decode(raw[[i]]), type="g")), split=",")[[1]] 
@@ -471,3 +495,40 @@ setMethod("C5Contours", "CellH5", function(ch5file, position, channel_region){
   }
   return(contours)
 })
+
+setMethod("C5ContourImage", "CellH5", function(ch5file, position, channel_region, 
+                                              frame, zstack=1, filename=NULL) {
+  image_ <- C5ReadImage(ch5file, position, channel_region, frame=frame, zstack=zstack)
+  contours <- C5Contours(ch5file, position, channel_region, frame=frame)
+    
+  w = dim(image_)[1] # image width
+  h = dim(image_)[2] # image heightDetails
+  
+  # open a png device if filename is given
+  if (!is.null(filename)) {
+    if (dev.cur() != 1) {
+      dev.off()
+    }
+    png(file=filename, width=w, height=h)
+  }
+    
+  vp <- viewport(xscale=c(1, w), yscale=c(h,1), default.units="native")
+  pushViewport(vp)
+  
+  grid.raster(toRaster(image_), x=w/2, y=h/2, width=w, height=h,
+              default.units="native", interpolate=FALSE)
+  
+  # draw the contours
+  for (i in 1:length(contours)) {
+    x <- contours[[i]][, 1]
+    y <- contours[[i]][, 2]
+    grid.polygon(x, y, default.units="native", gp=gpar(fill=FALSE, col="#ff0000"))
+  }
+
+  if (!is.null(filename)) {
+    dev.off()
+  }
+
+  return(NULL)
+})
+

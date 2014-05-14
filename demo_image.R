@@ -1,6 +1,5 @@
-
-library("grid")
-library("cellh5")
+source("R/cellh5.R")
+# library("cellh5")
 
 primary <- "primary__primary"
 c5f <- CellH5(file="data/_all_positions.ch5")
@@ -12,5 +11,7 @@ image_ <- C5ReadImage(c5f, positions[[1]], primary, frame=1, zstack=1)
 label_image <- C5ReadImage(c5f, positions[[1]], primary, frame=10, zstack=1, label_image=TRUE)
 
 colors = grey.colors(256)
-image(image_, col=colors, axes=FALSE, useRaster=TRUE)
 image(label_image, col=colors, axes=FALSE, useRaster=TRUE)
+image(image_, col=colors, axes=FALSE, useRaster=TRUE)
+
+C5ContourImage(c5f, positions[[1]], primary, frame=1, zstack=1)
