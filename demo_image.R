@@ -10,10 +10,10 @@ positions <- C5Positions(c5f, plates[[1]])
 image_ <- C5ReadImage(c5f, positions[[1]], primary, frame=1, zstack=1)
 label_image <- C5ReadImage(c5f, positions[[1]], primary, frame=10, zstack=1, label_image=TRUE)
 
-# colors = grey.colors(256)
+colors = grey.colors(256)
 # image(label_image, col=colors, axes=FALSE, useRaster=TRUE)
-# image(image_, col=colors, axes=FALSE, useRaster=TRUE)
+image(image_, col=colors, axes=FALSE, useRaster=TRUE)
 
 # filename = NULL --> plots to the screen
 C5ContourImage(c5f, positions[[1]], primary, frame=1, zstack=1) #,
-               #filename="/Users/hoefler/testi.png")
+               # filename="/Users/hoefler/testi.png")
