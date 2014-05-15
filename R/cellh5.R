@@ -203,7 +203,8 @@ setGeneric("C5Contours", function(ch5file, position, channel_region, frame=NULL,
 })
 
 setGeneric("C5ContourImage", function(ch5file, position, channel_region, frame, 
-                                      zstack=1, filename=NULL, ...) {
+                                      zstack=1, filename=NULL, default_color="#ffffff",
+                                      fontsize=8, show_labels=TRUE, ...) {
   standardGeneric("C5ContourImage")
 })
 
@@ -501,15 +502,17 @@ setMethod("C5Contours", "CellH5", function(ch5file, position, channel_region, fr
 })
 
 setMethod("C5ContourImage", "CellH5", function(ch5file, position, channel_region, 
-                                              frame, zstack=1, filename=NULL) {
+                                              frame, zstack=1, filename=NULL,
+                                              default_color="#ffffff", fontsize=8,
+                                              show_labels=TRUE) {
   image_ <- C5ReadImage(ch5file, position, channel_region, frame=frame, zstack=zstack)
   contours <- C5Contours(ch5file, position, channel_region, frame=frame)
   
-   frame_idx = which(C5TimeIdx(position, channel_region) == frame)
-   center <- C5Center(position, channel_region)[frame_idx, ]
-   labels <- C5ObjectLabels(position, channel_region)[frame_idx, ]
-   predictions <- C5Predictions(ch5file, position, channel_region, as_="color")[frame_idx]
-    
+  frame_idx = which(C5TimeIdx(position, channel_region) == frame)
+  center <- C5Center(position, channel_region)[frame_idx, ]
+  labels <- C5ObjectLabels(position, channel_region)$object_label[frame_idx]
+  colors <- C5Predictions(ch5file, position, channel_region, as_="color")[frame_idx]
+      
   w = dim(image_)[1] # image width
   h = dim(image_)[2] # image heightDetails
   
@@ -532,7 +535,20 @@ setMethod("C5ContourImage", "CellH5", function(ch5file, position, channel_region
     x <- contours[[i]][, 1]
     y <- contours[[i]][, 2]
     # x, y have origin is at bottom left , image origin top left
-    grid.polygon(x, h-y, default.units="native", gp=gpar(fill=FALSE, col="#ffffff"))
+    # overwrites default color if classifier defintion was found
+    if (!is.null(colors)) {
+      color = colors[[i]]
+    } else {
+      color = contour_color
+    }
+    
+    grid.polygon(x, h-y, default.units="native", gp=gpar(fill=FALSE, col=color))
+
+    # draw object labels
+    if (show_labels) {
+      grid.text(sprintf("%d", labels[[i]]), x=center[i, 1], y=h-center[i, 2],
+                gp=gpar(col=color), default.units="native")
+    }
   }
 
   if (!is.null(filename)) {
