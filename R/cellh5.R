@@ -204,7 +204,7 @@ setGeneric("C5Contours", function(ch5file, position, channel_region, frame=NULL,
 
 setGeneric("C5ContourImage", function(ch5file, position, channel_region, frame, 
                                       zstack=1, filename=NULL, default_color="#ffffff",
-                                      fontsize=8, show_labels=TRUE, ...) {
+                                      fontsize=12, show_labels=TRUE, ...) {
   standardGeneric("C5ContourImage")
 })
 
@@ -503,11 +503,12 @@ setMethod("C5Contours", "CellH5", function(ch5file, position, channel_region, fr
 
 setMethod("C5ContourImage", "CellH5", function(ch5file, position, channel_region, 
                                               frame, zstack=1, filename=NULL,
-                                              default_color="#ffffff", fontsize=8,
+                                              default_color="#ffffff", fontsize=12,
                                               show_labels=TRUE) {
   image_ <- C5ReadImage(ch5file, position, channel_region, frame=frame, zstack=zstack)
   contours <- C5Contours(ch5file, position, channel_region, frame=frame)
   
+  # these are needed for color coded contours and labels
   frame_idx = which(C5TimeIdx(position, channel_region) == frame)
   center <- C5Center(position, channel_region)[frame_idx, ]
   labels <- C5ObjectLabels(position, channel_region)$object_label[frame_idx]
@@ -517,12 +518,14 @@ setMethod("C5ContourImage", "CellH5", function(ch5file, position, channel_region
   h = dim(image_)[2] # image heightDetails
   
   # open a png device if filename is given
+  # R grDevices suck, the behave different on differnet machines
   if (!is.null(filename)) {
     if (dev.cur() != 1) {
       dev.off()
     }
     png(file=filename, width=w, height=h)
   }
+  
   vp <- viewport(xscale=c(1, w), yscale=c(1, h), default.units="native")
   pushViewport(vp)
   
@@ -546,7 +549,7 @@ setMethod("C5ContourImage", "CellH5", function(ch5file, position, channel_region
     # draw object labels
     if (show_labels) {
       grid.text(sprintf("%d", labels[[i]]), x=center[i, 1], y=h-center[i, 2],
-                gp=gpar(col=color), default.units="native")
+                gp=gpar(col=color, fontsize=fontsize), default.units="native")
     }
   }
 

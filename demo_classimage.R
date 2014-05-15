@@ -8,5 +8,5 @@ plates <- C5Plates(c5f)
 positions <- C5Positions(c5f, plates[[1]])
 
 # using the filename option would save a file to disk, otherwise a window pops up
-C5ContourImage(c5f, positions[[1]], primary, frame=1, zstack=1) #,
+C5ContourImage(c5f, positions[[1]], primary, frame=1, zstack=1, fontsize=12) #,
                # filename="/Users/hoefler/testi.png")
