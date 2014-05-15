@@ -523,10 +523,9 @@ setMethod("C5ContourImage", "CellH5", function(ch5file, position, channel_region
     }
     png(file=filename, width=w, height=h)
   }
-  plot.new()
   vp <- viewport(xscale=c(1, w), yscale=c(1, h), default.units="native")
   pushViewport(vp)
-  plotViewport()
+  
   grid.raster(toRaster(image_), x=w/2, y=h/2, width=w, height=h,
               default.units="native", interpolate=TRUE)
   
@@ -554,7 +553,6 @@ setMethod("C5ContourImage", "CellH5", function(ch5file, position, channel_region
   if (!is.null(filename)) {
     dev.off()
   }
-
   return(NULL)
 })
 
