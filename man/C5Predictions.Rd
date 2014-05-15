@@ -5,12 +5,13 @@
   position and channel_region. The function returns \code{NULL} if the position
   contains no class predictions.}
 \usage{
-predictions <- C5Predictions(ch5file, position, channel_region)
+predictions <- C5Predictions(ch5file, position, channel_region, as="label")
 }
 \arguments{
   \item{position}{Item of \code{\link{C5Positions}}}
   \item{channel_region}{A channel-region pair e.g. \code{primary__primary}}
-  \item{asLabels}{boolean - if true, the function returns class labels instead of class names}
+  \item{as}{string - on of "label", "name" or "color". Returns a list according to
+    the class definition i.e. the class label, name or color.}
 }
 \value{
   \code{C5Predcitons} returns an array of the predicted class labels (array of strings)
