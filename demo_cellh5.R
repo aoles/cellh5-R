@@ -12,6 +12,7 @@ plates <- C5Plates(c5f)
 positions <- C5Positions(c5f, plates[[1]])
 tl = C5Timelapse(positions[[1]])
 clfeatures <- C5FeatureNames(c5f, primary)
+classdef <- C5ClassifierDefinition(c5f, primary)
 
 # mean intensity, standard deviation, size
 main_features = c("n2_avg", "n2_stddev", "roisize")

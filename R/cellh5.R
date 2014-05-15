@@ -174,7 +174,7 @@ setGeneric("C5ObjectLabels", function(position, channel_region) {
   return(df)
 })
 
-setGeneric("C5Predictions", function(ch5file, position, channel_region, asLabel=FALSE, ...) {
+setGeneric("C5Predictions", function(ch5file, position, channel_region, as_=FALSE, ...) {
   standardGeneric("C5Predictions")})
 
 setGeneric("C5PredictionProbabilities", function(ch5file, position, channel_region, ...) {
@@ -227,7 +227,7 @@ setMethod("C5ObjectDetails", "CellH5", function(ch5file, position, channel_regio
   # use empty arrays if no classifier is given
   if (C5HasClassifiedObjects(position, channel_region)){
     class_names <- C5Predictions(ch5file, position, channel_region)
-    class_labels <- C5Predictions(ch5file, position, channel_region, asLabels=TRUE)
+    class_labels <- C5Predictions(ch5file, position, channel_region, as_="label")
   } else {
     class_names <- array(NA, length(frames))
     class_labels <- array(NA, length(frames))
@@ -353,7 +353,7 @@ setMethod("C5FileInfo", "CellH5",
         )
 
 setMethod("C5Predictions", "CellH5", function(ch5file, position, channel_region, 
-                                              asLabels=FALSE) {
+                                              as_="label") {
   if (!(C5HasObjects(position, channel_region) & C5HasClassifiedObjects(position, channel_region))) {
     return(NULL)
   }  
@@ -366,10 +366,14 @@ setMethod("C5Predictions", "CellH5", function(ch5file, position, channel_region,
 
   labels_ <- array()
   for (i in 1:length(classdef$label)) {
-    if (asLabels){
+    if (as_ == "label") {
       labels_[which(label_idx == rToCIndex(i))] <- classdef$label[[i]]
-    } else {
+    } else if (as_ == "color") {
+      labels_[which(label_idx == rToCIndex(i))] <- classdef$color[[i]]
+    } else if (as_ == " name") {
       labels_[which(label_idx == rToCIndex(i))] <- classdef$name[[i]]
+    } else {
+      stop(paste("Invalid argument", as_))
     }
   }
 
@@ -500,6 +504,11 @@ setMethod("C5ContourImage", "CellH5", function(ch5file, position, channel_region
                                               frame, zstack=1, filename=NULL) {
   image_ <- C5ReadImage(ch5file, position, channel_region, frame=frame, zstack=zstack)
   contours <- C5Contours(ch5file, position, channel_region, frame=frame)
+  
+   frame_idx = which(C5TimeIdx(position, channel_region) == frame)
+   center <- C5Center(position, channel_region)[frame_idx, ]
+   labels <- C5ObjectLabels(position, channel_region)[frame_idx, ]
+   predictions <- C5Predictions(ch5file, position, channel_region, as_="color")[frame_idx]
     
   w = dim(image_)[1] # image width
   h = dim(image_)[2] # image heightDetails
@@ -512,7 +521,7 @@ setMethod("C5ContourImage", "CellH5", function(ch5file, position, channel_region
     png(file=filename, width=w, height=h)
   }
     
-  vp <- viewport(xscale=c(1, w), yscale=c(h,1), default.units="native")
+  vp <- viewport(xscale=c(1, w), yscale=c(1, h), default.units="native")
   pushViewport(vp)
   
   grid.raster(toRaster(image_), x=w/2, y=h/2, width=w, height=h,
@@ -522,7 +531,8 @@ setMethod("C5ContourImage", "CellH5", function(ch5file, position, channel_region
   for (i in 1:length(contours)) {
     x <- contours[[i]][, 1]
     y <- contours[[i]][, 2]
-    grid.polygon(x, y, default.units="native", gp=gpar(fill=FALSE, col="#ff0000"))
+    # x, y have origin is at bottom left , image origin top left
+    grid.polygon(x, h-y, default.units="native", gp=gpar(fill=FALSE, col="#ffffff"))
   }
 
   if (!is.null(filename)) {
