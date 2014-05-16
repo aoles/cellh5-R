@@ -2,7 +2,7 @@
 \alias{cellh5}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-cellh5
+cellh5 for fun with R
 }
 \description{
 S4 class and methods for easy access of cellh5 files.

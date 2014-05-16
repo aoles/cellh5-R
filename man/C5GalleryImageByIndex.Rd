@@ -1,22 +1,29 @@
-\name{C5Events}
-\alias{C5Events}
-\title{Read out the tracks found by the event selection.}
-\description{Read out the tracks found by the event selection. The function returns
-\code{NULL} if the position contains no events.}
+\name{C5GalleryImageByIndex}
+\alias{C5GalleryImageByIndex}
+\title{
+C5GalleryImageByIndex
+}
+\description{
+Read a single gallery image from the hdf file. You rarely want to read out a single gallery image. 
+To export the galleries from the events found, use \link{C5ExportGallery}.
+}
 \usage{
-events <- C5Events(ch5file, position, channel_region, include_branches = TRUE, return_indices = FALSE)
+gal_image <- C5GalleryImageByIndex(ch5file, position, channel_region, index, zstack=1, gallery_size=60)
+}
+\arguments{
+  \item{ch5file}{\code{\link{CellH5}} instance}
+  \item{position}{Item of \code{\link{C5Positions}}}
+  \item{channel_region}{A channel-region pair e.g. \code{primary__primary}}
+  \item{index}{Object index of the cell. Index is in the range form 1 to max number of objects}
+  \item{zstack}{Index of the zslice. Default is 1, there is always 1}
+  \item{gallery_size}{Size in pixels of the gallery image. Default is 60}
 }
 
-\arguments{
-  \item{ch5file}{ \code{\link{CellH5}} instance }
-  \item{position}{\code{Item of \link{C5Positions}}}
-  \item{channel_region}{A channel-region pair e.g. \code{primary__primary}}
-  \item{include_branches}{If FALSE only one branch of a split track
-    is taken into account}
-  \item{return_indices}{If TRUE the items of the array are the object indices}
+\value{
+Returns a matrix that can be interpreted as 8bit grey level image.
 }
-\value{\code{Returns a 2x2 array}}
 \author{Rudolf Hoefler <rudolf.hoefler@imba.oeaw.ac.at>}
+
 \seealso{
   \code{\link{C5Close}},
   \code{\link{C5FileInfo}},
@@ -43,4 +50,8 @@ events <- C5Events(ch5file, position, channel_region, include_branches = TRUE, r
   \code{\link{C5HasTimelapse}},
   \code{\link{C5ObjectDetails}},
   \code{\link{C5HasClassifiedObjects}},
+  \code{\link{C5GalleryImageByIndex}},
+  \code{\link{C5ExportGallery}},
+  \code{\link{C5Contours}},
+  \code{\link{C5ContourImage}},
   }
