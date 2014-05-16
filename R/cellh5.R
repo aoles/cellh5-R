@@ -545,7 +545,6 @@ setMethod("C5ContourImage", "CellH5", function(ch5file, position, channel_region
     }
     
     grid.polygon(x, h-y, default.units="native", gp=gpar(fill=FALSE, col=color))
-
     # draw object labels
     if (show_labels) {
       grid.text(sprintf("%d", labels[[i]]), x=center[i, 1], y=h-center[i, 2],
