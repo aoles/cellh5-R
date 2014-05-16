@@ -1,5 +1,6 @@
-source("R/cellh5.R")
-# library("cellh5")
+# this script shows how to plot images using the native "image" method that comes 
+# with R
+library("cellh5")
 
 primary <- "primary__primary"
 c5f <- CellH5(file="data/_all_positions.ch5")
