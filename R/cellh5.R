@@ -583,6 +583,7 @@ setMethod("C5ExportGallery", "CellH5", function(ch5file, outdir, position, chann
                                                zstack=1) {
   
   if (!C5HasEvents(position)) {
+    warning(paste("No events found", H5Iget_name(position)))
     return(NULL)
   }
   
