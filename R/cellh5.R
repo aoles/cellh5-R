@@ -5,6 +5,9 @@
 library('rhdf5', verbose=FALSE)
 library("grid", verbose=FALSE)
 library('base64enc', verbose=FALSE)
+library('png', verbose=FALSE)
+
+BITDEPTH = 8
 
 ch5read <- function(ch5loc, name, index=NULL,
                     start=NULL, stride=NULL, block=NULL, count=NULL,
@@ -39,6 +42,14 @@ toRaster = function(x, cuts=-1:255+0.5,
   rv = x
   rv[] = colors[cux]
   return(t(rv))
+}
+
+wellName = function(h5group) {
+  # return a string that identifies the well and site (position)
+  name <- H5Iget_name(h5group)
+  site <- basename(name)
+  well <- basename(dirname(dirname(name)))
+  return(sprintf("W%s__S%s", well, site))
 }
 
 
@@ -91,7 +102,6 @@ setGeneric("C5HasTimelapse", function(position) {
     return(FALSE)
   }
 })
-
 
 # XXX remove standardGenerics if possible
 setGeneric("C5Close", function(ch5file) {
@@ -206,6 +216,16 @@ setGeneric("C5ContourImage", function(ch5file, position, channel_region, frame,
                                       zstack=1, filename=NULL, default_color="#ffffff",
                                       fontsize=12, show_labels=TRUE, ...) {
   standardGeneric("C5ContourImage")
+})
+
+setGeneric("C5ExportGallery", function(ch5file, outdir, position, channel_region, 
+                                      include_branches=FALSE, gallery_size=60, zstack=1, ...) {
+  standardGeneric("C5ExportGallery")
+})
+
+setGeneric("C5GalleryImageByIndex", function(ch5file, position, channel_region, index,
+                                             gallery_size=60, ...) {
+  standardGeneric("C5GalleryImageByIndex")
 })
 
 setMethod("C5ObjectDetails", "CellH5", function(ch5file, position, channel_region) {
@@ -558,3 +578,83 @@ setMethod("C5ContourImage", "CellH5", function(ch5file, position, channel_region
   return(NULL)
 })
 
+setMethod("C5ExportGallery", "CellH5", function(ch5file, outdir, position, channel_region, 
+                                               include_branches=FALSE, gallery_size=60,
+                                               zstack=1) {
+  
+  if (!C5HasEvents(position)) {
+    return(NULL)
+  }
+  
+  events <- C5Events(ch5file, position, channel_region, include_branches=include_branches, 
+                     return_indices=TRUE)
+  nframes <- dim(events)[2]
+  ntracks <- dim(events)[1]
+  
+  object_ids <- C5ObjectLabels(position, channel_region)
+  
+  for (i in 1:ntracks) {
+    # index of the first object
+    sid = events[[i, 1]]
+    print
+    filename = sprintf("TR%d__%s__T%05d__O03%d.png", 
+                        i,
+                        wellName(position),
+                        object_ids$frame_index[[sid]], 
+                        object_ids$object_label[[sid]])
+    gallery <- matrix(NA, nrow=gallery_size, ncol=(nframes*gallery_size))
+    
+    for (j in 1:nframes) {
+      cols = seq(gallery_size*(j-1)+1, gallery_size*j, 1)
+      gal <- C5GalleryImageByIndex(c5f, position, channel_region, events[[i, j]],
+                                   zstack=zstack, gallery_size=gallery_size)
+      gallery[ , cols] <- gal
+    }
+    writePNG(gallery/(2**BITDEPTH), target=file.path(outdir, filename))
+    print(paste(sprintf("%d/%d", i, ntracks), file.path(outdir, filename)))
+  }
+  return(NULL)
+  })
+
+setMethod("C5GalleryImageByIndex", "CellH5",
+          function(ch5file, position, channel_region, index, zstack=1, gallery_size=60) {
+  
+  if (length(index) > 1) {
+    stop("index must be a single integer")
+  }
+  index <- cToRIndex(index)
+            
+  frame <- C5TimeIdx(position, channel_region)[index]
+  image_ <- C5ReadImage(ch5file, position, channel_region, frame=frame, zstack=zstack)
+  center <- C5Center(position, channel_region)[index, ]
+  width <- dim(image_)[1]
+  height <- dim(image_)[2]
+  
+  halfsize <- floor(gallery_size/2.0)
+  xmin <- center$x - halfsize
+  xmax <- xmin + gallery_size - 1
+  ymin <- center$y - halfsize
+  ymax <- ymin + gallery_size - 1
+    
+  # correcting x coordinate if center is close to the image border
+  if (center$x <= halfsize) {
+    xmin <- 1
+    xmax <- gallery_size
+  } else if (center$x >= width-halfsize) {
+    xmin <- width - gallery_size + 1
+    xmax <- width
+  }
+  
+  # correction y coordinate if center is close to the image border
+  if (center$y <= halfsize) {
+    ymin <- 1
+    ymax <- gallery_size 
+  } else if (center$y >= height-halfsize) {
+    ymin <- height - gallery_size + 1
+    ymax <- height
+  }
+  
+  gallery <- image_[xmin:xmax, ymin:ymax]
+  
+  return(gallery)
+  })
