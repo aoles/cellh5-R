@@ -71,33 +71,15 @@ Open a file (note: the source package does not include demo data).
 c5f <- CellH5("../data/_all_positions.ch5")
 @
 
-\section{Convenience functions}
-All methods start with the prefix \textbf{C5}. For detailed information of each
-single function type in the \textit{R-terminal} \texttt{help(<C5FunctionName>)}
-or \texttt{?<C5FunctionName>}. Below is a list of available functions.
-\begin{enumerate}
-  \item \texttt{CellH5}
-  \item \texttt{C5Close}
-  \item \texttt{C5FileInfo}
-  \item \texttt{C5Plates}
-  \item \texttt{C5Positions}
-  \item \texttt{C5Timelapse}
-  \item \texttt{C5TimeIdx}
-  \item \texttt{C5ObjectCounts}
-  \item \texttt{C5OjbectLabels}
-  \item \texttt{C5ReadImage}
-  \item \texttt{C5ChannelRegion}
-  \item \texttt{C5ClassifierDefinition}
-  \item \texttt{C5FeatureNames}
-  \item \texttt{C5FeaturesByName}
-  \item \texttt{C5Events}
-  \item \texttt{C5EventFeatures}
-  \item \texttt{C5Center}
-  \item \texttt{C5BoundingBoxes}
-  \item \texttt{C5Orientation}
-  \item \texttt{C5Preditions}
-  \item \texttt{C5PredictionsProbabilities}
-\end{enumerate}
+\subsection{Demo scripts}
+There are a some demo scripts in the repository. Each script can be downloaded \href{https://github.com/CellH5/C5}{here}. \\
+
+\begin{tabular}{ l l }
+  \file{demo\_cellh5.R} & Shows basic functionallity and the use of the introspection methods such \\ &  \Rfunction{C5HasObjects(...)} or \Rfunction{C5HasTimelapse(...)}.\\
+  \file{demo\_image.R} & Load an image and plot it using the native \Rfunction{image(...)} method. \\
+  \file{demo\_classimage.R} & render an image with color coded object contours and labels. \\
+  \file{demo\_gallery.R} & Export Event gallery images to a user defined directory. Script is incredibly slow. \\ &  Exporting galleries is always slow.\\
+\end{tabular}
 
 \section{Reading basic information}
 Read out specific information such as plate names, segmentation (channel-regions pairs), 
@@ -136,30 +118,74 @@ image_ <- C5ReadImage(c5f, positions$W0_P0013, "primary__primary", frame=1, zsta
 image(image_, col=colors, axes=FALSE, useRaster=TRUE)
 @
 
-%%<<loadSource>>==
-%%
-%%# see available feature
-%%main_features = c("n2_avg", "n2_stddev", "roisize")
-%%
-%%features <- C5FeaturesByName(c5f, positions[[1]], "primary__primary", main_features)
-%%object_ids <- C5ObjectLabels(positions[[1]], "primary__primary")
-%%center <- C5Center(positions$W0_P0013, "primary__primary")
-%%bbox <- C5BoundingBoxes(positions$W0_P0013, "primary__primary")
-%%orientation <- C5Orientation(positions$W0_P0013, "primary__primary")
-%%predictions <- C5Predictions(c5f, positions$W0_P0013, "primary__primary")
-%%probs <- C5PredictionProbabilities(c5f, positions$W0_P0013, "primary__primary")
-%%events <- C5Events(c5f, positions[[1]], "primary__primary",
-%%                    include_branches=TRUE, return_indices=TRUE)
-%%event_features <- C5EventFeatures(c5f, positions[[1]], "primary__primary", 
-%%                                    TRUE, main_features)
-%% @
+\subsection{Example: read object details (main features)}
+In this tutorial we refer as main features the mean intesity, its standard deviation and the size of an object.
 
-\section{File introspection}
-Finally, the method \texttt{C5FileInfo} gives you an overview of the file contents. 
-Alternatively you can use \href{http://www.hdfgroup.org/products/java/hdf-java-html/hdfview/}{HDFView}.
 <<loadSource>>==
-C5FileInfo(c5f)
+object_details <- C5ObjectDetails(c5f, positions$W0_P0013, "primary__primary")
+head(object_details)
 @
 
+\section{File introspection}
+Finally, the method \Rfunction{C5FileInfo} gives you an overview of the file contents. 
+Alternatively you can use \href{http://www.hdfgroup.org/products/java/hdf-java-html/hdfview/}{HDFView}.
+\\
+Some function are start with a prefix \texttt{"C5Has..."}. This methods are meant to determine 
+if the hdf5 file contains e.g. \texttt{Objects, Events, Tracks} or if the objects have been classified at all.
+
+<<loadSource>>==
+if (C5HasEvents(positions$W0_P0013)) {
+  events <- C5Events(c5f, positions$W0_P0013, "primary__primary",
+                    include_branches=TRUE, return_indices=TRUE)
+  event_features <- C5EventFeatures(c5f, positions$W0_P0013, 
+                                    "primary__primary", TRUE, c("n2_avg", "roisize"))
+} else {
+  warning('no events found!')
+}
+@
+
+Although \texttt{C5EventFeatures(...)} would return \texttt{NULL} if the file contains no events, it is recommend to use these function to improve code readablility.
+
+
+<<loadSource>>==
+head(C5FileInfo(c5f))
+@
+
+\section{Currently implemented functions}
+All methods start with the prefix \textbf{C5}. For detailed information of each
+single function type in the \textit{R-terminal} \texttt{help(<C5FunctionName>)}
+or \texttt{?<C5FunctionName>}. Below is a list of available functions. \\
+
+\begin{tabular}{ l l }
+  \Rfunction{C5BoundingBoxes} & read the bounding boxes of the object \\
+  \Rfunction{C5Center} & return the centers of the object \\
+  \Rfunction{C5ChannelRegions} & list of the segmentation regions \\
+  \Rfunction{C5ClassifierDefinition} & read the classifier definition from the file \\
+  \Rfunction{C5Close} & close cellh5 instance and release hdf5 resources \\
+  \Rfunction{C5ContourImage} & plot a image with color coded contours on the screen \\
+  \Rfunction{C5Contours} & read object contours from file \\
+  \Rfunction{C5EventFeatures}	& read feature vectors per track found by the event selection \\
+  \Rfunction{C5Events} & read tracks found by the event selection \\
+  \Rfunction{C5ExportGallery} & export gallery images of the track to the hard disk \\
+  \Rfunction{C5FeatureNames} & get a list of the feature names used for a particular classifier \\
+  \Rfunction{C5FeaturesByName} & load features vectors. Features are selected by name \\
+  \Rfunction{C5FileInfo} & print basic information of the content of a cellh5 file \\ 
+  \Rfunction{C5GalleryImageByIndex}	& load a gallery image of an object by index\\
+  \Rfunction{C5HasClassifiedObjects} & returns 'TRUE' if a position contains objects that has been labeled by a classifier \\
+  \Rfunction{C5HasEvents}	& test if a position contains events found by event selection \\
+  \Rfunction{C5HasObjects} & test if a position contains objects found by segmentation \\
+  \Rfunction{C5HasTimelapse} & test if a position contains timelapse information \\
+  \Rfunction{C5ObjectCounts} & read out the number of cells per frame and class label \\
+  \Rfunction{C5ObjectDetails}	& read detailed object table. Table contains class labels, mean intensity, etc... \\
+  \Rfunction{C5ObjectLabels} & list of all object\\
+  \Rfunction{C5Orientation} & angle and eccentricity of an ellipse fit \\
+  \Rfunction{C5Plates} & list of processed plates names from the file \\
+  \Rfunction{C5Positions} & list of positions for a certain plate\\
+  \Rfunction{C5PredictionProbabilities}	& prediction probabilities of a classification (if provided by the classifier)\\
+  \Rfunction{C5Predictions} & read out the predicted class names \\
+  \Rfunction{C5ReadImage}	& read an raw image as array \\
+  \Rfunction{C5TimeIdx}	& return a list of frame numbers for each object \\
+  \Rfunction{C5Timelapse}	& read the timelapse table for a given position \\
+\end{tabular}
 
 \end{document}
