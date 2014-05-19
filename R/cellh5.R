@@ -5,7 +5,7 @@
 library('rhdf5', verbose=FALSE)
 library('grid', verbose=FALSE)
 library('base64enc', verbose=FALSE)
-library('png', verbose=FALSE)
+library('EBImage', verbos=FALSE)
 
 BITDEPTH = 8
 
@@ -611,7 +611,7 @@ setMethod("C5ExportGallery", "CellH5", function(ch5file, outdir, position, chann
                                    zstack=zstack, gallery_size=gallery_size)
       gallery[ , cols] <- gal
     }
-    writePNG(gallery/(2**BITDEPTH), target=file.path(outdir, filename))
+    writeImage(gallery/2**BITDEPTH, file.path(outdir, filename))
     print(paste(sprintf("%d/%d", i, ntracks), file.path(outdir, filename)))
   }
   return(NULL)

@@ -4,7 +4,7 @@ Date: 2013/12/18
 Title: CellH5 reader
 Author: Rudolf Hoefler <rudolf.hoefler@gmail.com>
 Maintainer: Rudolf Hoefler <rudolf.hoefler@gmail.com>
-Depends: R (>= 3.1.0), rhdf5 (>= 2.8.0), base64enc (>= 0.1), png (>= 0.1), methods
+Depends: R (>= 3.1.0), rhdf5 (>= 2.8.0), base64enc (>= 0.1), EBImage (>= 4.6), grid (>= 3.1.0), methods
 Suggests:
 Description: Provides an S4 class to read data from cellh5 files
 License: LGPL (>= 3)

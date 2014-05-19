@@ -1,3 +1,6 @@
 import(rhdf5)
+import(grid)
+import(EBImage)
+import(base64enc)
 export(CellH5)
 exportPattern("^[C][5]")
