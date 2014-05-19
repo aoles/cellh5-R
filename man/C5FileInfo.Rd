@@ -7,6 +7,7 @@ C5FileInfo(ch5file)
 \arguments{
   \item{ch5file}{\code{\link{CellH5}} instance}}
 \author{Rudolf Hoefler <rudolf.hoefler@imba.oeaw.ac.at>}
+
 \seealso{
   \code{\link{C5Close}},
   \code{\link{C5FileInfo}},
@@ -33,4 +34,8 @@ C5FileInfo(ch5file)
   \code{\link{C5HasTimelapse}},
   \code{\link{C5ObjectDetails}},
   \code{\link{C5HasClassifiedObjects}},
+  \code{\link{C5GalleryImageByIndex}},
+  \code{\link{C5ExportGallery}},
+  \code{\link{C5Contours}},
+  \code{\link{C5ContourImage}},
   }

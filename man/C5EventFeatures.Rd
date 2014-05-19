@@ -49,4 +49,8 @@ intensity, standard deviation of the intensity and the size of the object. See
   \code{\link{C5HasTimelapse}},
   \code{\link{C5ObjectDetails}},
   \code{\link{C5HasClassifiedObjects}},
+  \code{\link{C5GalleryImageByIndex}},
+  \code{\link{C5ExportGallery}},
+  \code{\link{C5Contours}},
+  \code{\link{C5ContourImage}},
   }

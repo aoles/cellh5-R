@@ -16,6 +16,7 @@ features <- C5FeaturesNames(ch5file, channel_region, feature_names)
 \value{Returns an array
 }
 \author{Rudolf Hoefler <rudolf.hoefler@imba.oeaw.ac.at>}
+
 \seealso{
   \code{\link{C5Close}},
   \code{\link{C5FileInfo}},
@@ -42,4 +43,8 @@ features <- C5FeaturesNames(ch5file, channel_region, feature_names)
   \code{\link{C5HasTimelapse}},
   \code{\link{C5ObjectDetails}},
   \code{\link{C5HasClassifiedObjects}},
+  \code{\link{C5GalleryImageByIndex}},
+  \code{\link{C5ExportGallery}},
+  \code{\link{C5Contours}},
+  \code{\link{C5ContourImage}},
   }

@@ -11,6 +11,7 @@ if the position contains no objects.}
   \item{position}{\code{item of \link{C5Positions}}}
   \item{channel_region}{A channel-region pair e.g. \code{primary__primary}}}
 \author{Rudolf Hoefler <rudolf.hoefler@imba.oeaw.ac.at>}
+
 \seealso{
   \code{\link{C5Close}},
   \code{\link{C5FileInfo}},
@@ -37,4 +38,8 @@ if the position contains no objects.}
   \code{\link{C5HasTimelapse}},
   \code{\link{C5ObjectDetails}},
   \code{\link{C5HasClassifiedObjects}},
+  \code{\link{C5GalleryImageByIndex}},
+  \code{\link{C5ExportGallery}},
+  \code{\link{C5Contours}},
+  \code{\link{C5ContourImage}},
   }

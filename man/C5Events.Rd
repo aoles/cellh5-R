@@ -17,6 +17,7 @@ events <- C5Events(ch5file, position, channel_region, include_branches = TRUE, r
 }
 \value{\code{Returns a 2x2 array}}
 \author{Rudolf Hoefler <rudolf.hoefler@imba.oeaw.ac.at>}
+
 \seealso{
   \code{\link{C5Close}},
   \code{\link{C5FileInfo}},
@@ -43,4 +44,8 @@ events <- C5Events(ch5file, position, channel_region, include_branches = TRUE, r
   \code{\link{C5HasTimelapse}},
   \code{\link{C5ObjectDetails}},
   \code{\link{C5HasClassifiedObjects}},
+  \code{\link{C5GalleryImageByIndex}},
+  \code{\link{C5ExportGallery}},
+  \code{\link{C5Contours}},
+  \code{\link{C5ContourImage}},
   }

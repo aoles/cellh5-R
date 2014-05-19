@@ -1,6 +1,8 @@
 # demo script to show how to render a image with color coded contours to screen
 
-library("cellh5")
+library(cellh5)
+# sometimes grid packages gets not loaded automatically
+library(grid)
 
 primary <- "primary__primary"
 c5f <- CellH5(file="data/_all_positions.ch5")
