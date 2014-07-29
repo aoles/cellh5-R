@@ -240,9 +240,17 @@ setMethod("C5ObjectDetails", "CellH5", function(ch5file, position, channel_regio
                                c("n2_avg", "n2_stddev", "roisize"))
 
   # map frame numbers according to timelapse table
-  frames = array(0, length(tidx))
-  for (i in 1:length(timelapse$frame)) {
-    frames[which(tidx == rToCIndex(i))] <- timelapse$frame[[i]]
+  
+  
+  # first case -> single timepoint
+  # second case -> timelapse
+  if (length(unique(tidx)) == 1) {
+    frames <- array(unique(tidx))
+  } else {
+    frames = array(0, length(tidx))
+    for (i in 1:length(timelapse$frame)) {
+      frames[which(tidx == rToCIndex(i))] <- timelapse$frame[[i]]
+    }
   }
 
   # use empty arrays if no classifier is given
@@ -391,7 +399,7 @@ setMethod("C5Predictions", "CellH5", function(ch5file, position, channel_region,
       labels_[which(label_idx == rToCIndex(i))] <- classdef$label[[i]]
     } else if (as_ == "color") {
       labels_[which(label_idx == rToCIndex(i))] <- classdef$color[[i]]
-    } else if (as_ == " name") {
+    } else if (as_ == "name") {
       labels_[which(label_idx == rToCIndex(i))] <- classdef$name[[i]]
     } else {
       stop(paste("Invalid argument", as_))

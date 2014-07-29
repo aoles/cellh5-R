@@ -28,7 +28,7 @@ if (C5HasObjects(positions[[1]], primary)) {
   center <- C5Center(positions$W0_P0013, primary)
   bbox <- C5BoundingBoxes(positions$W0_P0013, primary)
   orientation <- C5Orientation(positions$W0_P0013, primary)
-  predictions <- C5Predictions(c5f, positions$W0_P0013, primary)
+  predictions <- C5Predictions(c5f, positions$W0_P0013, primary, as="label")
   probs <- C5PredictionProbabilities(c5f, positions$W0_P0013, primary)
   details <- C5ObjectDetails(c5f, positions$W0_P0013, primary)
   contours <- C5Contours(c5f, positions$W0_P0013, primary, frame=1)
