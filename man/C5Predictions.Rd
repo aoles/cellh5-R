@@ -14,7 +14,7 @@ predictions <- C5Predictions(ch5file, position, channel_region, as="label")
     the class definition i.e. the class label, name or color.}
 }
 \value{
-  \code{C5Predcitons} returns an array of the predicted class labels (array of strings)
+  \code{C5Predictons} returns an array of the predicted class labels (array of strings)
 }
 \author{Rudolf Hoefler <rudolf.hoefler@imba.oeaw.ac.at>}
 \seealso{
