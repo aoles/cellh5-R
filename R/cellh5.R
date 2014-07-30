@@ -214,7 +214,7 @@ setGeneric("C5Contours", function(ch5file, position, channel_region, frame=NULL,
 
 setGeneric("C5ContourImage", function(ch5file, position, channel_region, frame, 
                                       zstack=1, filename=NULL, default_color="#ffffff",
-                                      fontsize=12, show_labels=TRUE, ...) {
+                                      fontsize=12, show_labels=TRUE, background_region=NULL, ...) {
   standardGeneric("C5ContourImage")
 })
 
@@ -427,6 +427,7 @@ setMethod("C5PredictionProbabilities", "CellH5",
 
 setMethod("C5ReadImage", "CellH5", function(ch5file, position, channel_region,
                                             frame_index, zstack=1, label_image=FALSE) {
+  
   cdf = data.frame(ch5file@global_def$image$region)
   color_index <- cToRIndex(cdf$channel_idx[which(cdf$region_name == sprintf("region___%s", channel_region))])
   
@@ -532,10 +533,22 @@ setMethod("C5Contours", "CellH5", function(ch5file, position, channel_region, fr
 setMethod("C5ContourImage", "CellH5", function(ch5file, position, channel_region, 
                                               frame, zstack=1, filename=NULL,
                                               default_color="#ffffff", fontsize=12,
-                                              show_labels=TRUE) {
-  image_ <- C5ReadImage(ch5file, position, channel_region, frame=frame, zstack=zstack)
+                                              show_labels=TRUE, background_region=NULL) {
+  
   contours <- C5Contours(ch5file, position, channel_region, frame=frame)
   
+  cdf = data.frame(ch5file@global_def$image$region)
+  mask <- cdf$region_name == sprintf("region___%s", channel_region)
+  print(mask)
+  if (!all(mask) && is.null(background_region)) {
+    region <- strsplit(cdf$region_name[[1]], "___")[[1]][[2]]
+    image_ <- C5ReadImage(ch5file, position, region, frame=frame, zstack=zstack)
+  } else if (!all(mask) && !is.null(background_region)) {
+    image_ <- C5ReadImage(ch5file, position, background_region, frame=frame, zstack=zstack)
+  } else {
+    image_ <- C5ReadImage(ch5file, position, channel_region, frame=frame, zstack=zstack)
+  }
+
   # these are needed for color coded contours and labels
   frame_idx = which(C5TimeIdx(position, channel_region) == frame)
   center <- C5Center(position, channel_region)[frame_idx, ]
@@ -569,7 +582,7 @@ setMethod("C5ContourImage", "CellH5", function(ch5file, position, channel_region
     if (!is.null(colors)) {
       color = colors[[i]]
     } else {
-      color = contour_color
+      color = default_color
     }
     
     grid.polygon(x, h-y, default.units="native", gp=gpar(fill=FALSE, col=color))
