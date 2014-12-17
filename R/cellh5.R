@@ -255,7 +255,7 @@ setMethod("C5ObjectDetails", "CellH5", function(ch5file, position, channel_regio
 
   # use empty arrays if no classifier is given
   if (C5HasClassifiedObjects(position, channel_region)){
-    class_names <- C5Predictions(ch5file, position, channel_region)
+    class_names <- C5Predictions(ch5file, position, channel_region, as_="name")
     class_labels <- C5Predictions(ch5file, position, channel_region, as_="label")
   } else {
     class_names <- array(NA, length(frames))
