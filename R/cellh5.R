@@ -239,6 +239,7 @@ setMethod("C5ObjectDetails", "CellH5", function(ch5file, position, channel_regio
   features <- C5FeaturesByName(ch5file, position, channel_region, 
                                c("n2_avg", "n2_stddev", "roisize"))
 
+
   # map frame numbers according to timelapse table
   
   
@@ -308,7 +309,6 @@ setMethod("C5FeaturesByName", "CellH5",
     if (!C5HasObjects(position, channel_region)) {
       return(NULL)
     } 
-    
     
     features = ch5read(position, name=sprintf('feature/%s/object_features', channel_region))
     ftr_idx = match(feature_names, C5FeatureNames(ch5file, channel_region))
