@@ -308,10 +308,24 @@ setMethod("C5FeaturesByName", "CellH5",
     if (!C5HasObjects(position, channel_region)) {
       return(NULL)
     } 
+    
+    
     features = ch5read(position, name=sprintf('feature/%s/object_features', channel_region))
     ftr_idx = match(feature_names, C5FeatureNames(ch5file, channel_region))
-    features <- features[ftr_idx, ] 
-    df <- data.frame(t(features))
+    features <- features[ftr_idx, ]
+    
+    #return(features)
+#     print(feature_names)
+#     print(ftr_idx)
+#     print(head(feature_)
+#     print(is.vector(ftr_idx))
+#     
+   # R returns different data types  
+   if (length(feature_names) == 1) {
+     df <- data.frame(features)
+   } else {
+     df <- data.frame(t(features))
+   }
     colnames(df) <- feature_names
     return(df)
     
