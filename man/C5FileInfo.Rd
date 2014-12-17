@@ -5,7 +5,8 @@
 C5FileInfo(ch5file)
 }
 \arguments{
-  \item{ch5file}{\code{\link{CellH5}} instance}}
+  \item{ch5file}{\code{\link{CellH5}} instance}
+  }
 \author{Rudolf Hoefler <rudolf.hoefler@imba.oeaw.ac.at>}
 
 \seealso{

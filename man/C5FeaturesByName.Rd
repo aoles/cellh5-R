@@ -6,9 +6,10 @@ Read features for a particular channel-region. The function returns \code{NULL}
 if the position contains no features.
 }
 \usage{
-features <- C5FeaturesNames(ch5file, channel_region, feature_names)
+features <- C5FeaturesByNames(ch5file, position, channel_region, feature_names)
 }
 \arguments{
+  \item{ch5file}{\code{\link{CellH5}} instance}
   \item{position}{\code{Item of \link{C5Positions}}}
   \item{channel_region}{A channel-region pair e.g. \code{primary__primary}}
   \item{feature_names}{List of feature names}}
