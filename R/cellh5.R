@@ -9,18 +9,18 @@ library('EBImage', verbos=FALSE)
 
 BITDEPTH = 8
 
-ch5read <- function(ch5loc, name, index=NULL,
+c5read <- function(position, name, index=NULL,
                     start=NULL, stride=NULL, block=NULL, count=NULL,
                     compoundAsDataFrame = TRUE, callGeneric = TRUE,
                     read.attributes = TRUE) {
   
-  if (H5Lexists(ch5loc, name)){
-    ret <- h5read(ch5loc, name, index=index,
+  if (H5Lexists(position, name)){
+    ret <- h5read(position, name, index=index,
                   start=start, stride=stride, block=block, count=count,
                   compoundAsDataFrame=compoundAsDataFrame, callGeneric=callGeneric,
                   read.attributes=read.attributes)
   } else {
-    show(ch5loc)
+    show(position)
     stop(sprintf("No subgroup %s in HDF5 group", name))
   }
   return(ret)
@@ -65,7 +65,7 @@ CellH5 <- function(file=NA) {
   } else {
     stop(sprintf("file %s does not exist!", file))
   }
-  gdef <- ch5read(fid, compoundAsDataFrame=FALSE, name='/definition')
+  gdef <- c5read(fid, compoundAsDataFrame=FALSE, name='/definition')
   new("CellH5", filename=file, fid=H5Fopen(file), global_def=gdef, positions=list())
 }
 
@@ -80,7 +80,7 @@ setGeneric("C5HasClassifiedObjects", function(position, channel_region) {
 setGeneric("C5HasObjects", function(position, channel_region) {
   # unfortunately there is no meta data how many ojbects are found 
   # use the fk time index
-  ti <- ch5read(position, name=sprintf("object/%s", channel_region))$time_idx
+  ti <- c5read(position, name=sprintf("object/%s", channel_region))$time_idx
   if (length(ti) == 0) {
     return(FALSE)
   } else { 
@@ -88,7 +88,7 @@ setGeneric("C5HasObjects", function(position, channel_region) {
 })
 
 setGeneric("C5HasEvents", function(position) {
-  oid <- ch5read(position, name="object/event")$obj_id
+  oid <- c5read(position, name="object/event")$obj_id
   if (length(oid) == 0) {
     return(FALSE)
   } else { 
@@ -130,14 +130,14 @@ setGeneric("C5FeatureNames", function(ch5file, channel_region, ...) {
 
 setGeneric("C5Timelapse", function(position) {
   if (C5HasTimelapse(position)) {
-    return(ch5read(position, name="image/time_lapse"))
+    return(c5read(position, name="image/time_lapse"))
   } else {
     return(NULL)
   }
 })
 
 setGeneric("C5TimeIdx", function(position, channel_region) {
-  tidx <- ch5read(position, name=sprintf("object/%s", channel_region))$time_idx
+  tidx <- c5read(position, name=sprintf("object/%s", channel_region))$time_idx
   if (length(tidx) == 0) {
     return(NULL)
   } else {
@@ -149,7 +149,7 @@ setGeneric("C5Orientation", function(position, channel_region) {
   if (!C5HasObjects(position, channel_region)) {
     return(NULL)
   } 
-  orientation = ch5read(position, name=sprintf('feature/%s/orientation', channel_region))
+  orientation = c5read(position, name=sprintf('feature/%s/orientation', channel_region))
   df <- data.frame(orientation)
   return(df)
 })
@@ -158,7 +158,7 @@ setGeneric("C5BoundingBoxes", function(position, channel_region) {
   if (!C5HasObjects(position, channel_region)) {
     return(NULL)
   } 
-  center = ch5read(position, name=sprintf('feature/%s/bounding_box', channel_region))
+  center = c5read(position, name=sprintf('feature/%s/bounding_box', channel_region))
   df <- data.frame(center)
   return(df)
 })
@@ -167,7 +167,7 @@ setGeneric("C5Center", function(position, channel_region) {
   if (!C5HasObjects(position, channel_region)) {
     return(NULL)
   } 
-  center = ch5read(position, name=sprintf('feature/%s/center', channel_region))
+  center = c5read(position, name=sprintf('feature/%s/center', channel_region))
   df <- data.frame(center)
   return(df)
 })
@@ -177,7 +177,7 @@ setGeneric("C5ObjectLabels", function(position, channel_region) {
     return(NULL)
   } 
   
-  object_labels = ch5read(position, name=sprintf('object/%s', channel_region))
+  object_labels = c5read(position, name=sprintf('object/%s', channel_region))
   df <- data.frame(object_labels)
   colnames(df) <- c("frame_index", "object_label")
   df$frame_index <- cToRIndex(df$frame_index)
@@ -233,8 +233,8 @@ setMethod("C5ObjectDetails", "CellH5", function(ch5file, position, channel_regio
     return(NULL)
   }
   
-  tidx <- ch5read(position, name=sprintf("object/%s", channel_region))$time_idx
-  objid <- ch5read(position, name=sprintf("object/%s", channel_region))$obj_label_id
+  tidx <- c5read(position, name=sprintf("object/%s", channel_region))$time_idx
+  objid <- c5read(position, name=sprintf("object/%s", channel_region))$obj_label_id
   timelapse <- C5Timelapse(position)
   features <- C5FeaturesByName(ch5file, position, channel_region, 
                                c("n2_avg", "n2_stddev", "roisize"))
@@ -277,7 +277,7 @@ setMethod("C5ObjectCounts", "CellH5", function(ch5file, position, channel_region
   
   classdef <- C5ClassifierDefinition(ch5file, channel_region)  
   time_idx <- C5TimeIdx(position, channel_region)
-  label_idx <- ch5read(position,
+  label_idx <- c5read(position,
                       name=sprintf("feature/%s/object_classification/prediction",
                                    channel_region))$label_idx
   
@@ -310,7 +310,7 @@ setMethod("C5FeaturesByName", "CellH5",
       return(NULL)
     } 
     
-    features = ch5read(position, name=sprintf('feature/%s/object_features', channel_region))
+    features = c5read(position, name=sprintf('feature/%s/object_features', channel_region))
     ftr_idx = match(feature_names, C5FeatureNames(ch5file, channel_region))
     features <- features[ftr_idx, ]
          
@@ -395,7 +395,7 @@ setMethod("C5Predictions", "CellH5", function(ch5file, position, channel_region,
   }  
 
   classdef <- C5ClassifierDefinition(ch5file, channel_region) 
-  label_idx <- ch5read(position,
+  label_idx <- c5read(position,
                       name=sprintf("feature/%s/object_classification/prediction",
                                    channel_region))$label_idx
   
@@ -423,7 +423,7 @@ setMethod("C5PredictionProbabilities", "CellH5",
   }
   
   classdef <- C5ClassifierDefinition(ch5file, channel_region) 
-  probs <- ch5read(position,
+  probs <- c5read(position,
                   name=sprintf("feature/%s/object_classification/probability",
                                 channel_region))
   
@@ -444,14 +444,14 @@ setMethod("C5ReadImage", "CellH5", function(ch5file, position, channel_region,
     itype <- "image/channel"
   }
 
-  image_ <- ch5read(position, name=itype,
+  image_ <- c5read(position, name=itype,
                  index=list(NULL, NULL, zstack, frame_index, color_index))[, , 1,1,1]
   return(image_)
 })
 
 setMethod("C5Events", "CellH5", function(ch5file, position, channel_region, 
                                          include_branches=TRUE, return_indices=FALSE) {
-  events <- data.frame(ch5read(position, name="object/event"))
+  events <- data.frame(c5read(position, name="object/event"))
   if (length(events$obj_id) == 0) {
     return(NULL)
   }
@@ -513,7 +513,7 @@ setMethod("C5EventFeatures", "CellH5", function(ch5file, position, channel_regio
 })
 
 setMethod("C5Contours", "CellH5", function(ch5file, position, channel_region, frame=NULL){
-  raw <- ch5read(position, name=sprintf('feature/%s/crack_contour', channel_region))
+  raw <- c5read(position, name=sprintf('feature/%s/crack_contour', channel_region))
   
   # saves a lot of computing time due to the decoding of the string
   if (!is.null(frame)) {
