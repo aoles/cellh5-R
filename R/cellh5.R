@@ -57,7 +57,9 @@ CellH5 <- setClass("CellH5",
                    slots = c(filename="character", 
                              fid="H5IdComponent",
                              global_def="list",
-                             positions="list"))
+                             positions="ANY"),
+                   # prototype=list(positions = list())
+                   )
 
 CellH5 <- function(file=NA) {
   if (file.exists(file)) {
@@ -66,7 +68,7 @@ CellH5 <- function(file=NA) {
     stop(sprintf("file %s does not exist!", file))
   }
   gdef <- c5read(fid, compoundAsDataFrame=FALSE, name='/definition')
-  new("CellH5", filename=file, fid=H5Fopen(file), global_def=gdef, positions=list())
+  new("CellH5", filename=file, fid=H5Fopen(file), global_def=gdef)
 }
 
 setGeneric("C5HasClassifiedObjects", function(position, channel_region) {
@@ -228,6 +230,13 @@ setGeneric("C5GalleryImageByIndex", function(ch5file, position, channel_region, 
   standardGeneric("C5GalleryImageByIndex")
 })
 
+setGeneric("C5ClosePositions", function(positions) {
+  # rhdf interface sucks, R sucks!
+  for (pos in positions) {
+   H5Gclose(pos)
+  }
+})
+
 setMethod("C5ObjectDetails", "CellH5", function(ch5file, position, channel_region) {
   if (!C5HasObjects(position, channel_region)) {
     return(NULL)
@@ -239,10 +248,6 @@ setMethod("C5ObjectDetails", "CellH5", function(ch5file, position, channel_regio
   features <- C5FeaturesByName(ch5file, position, channel_region, 
                                c("n2_avg", "n2_stddev", "roisize"))
 
-
-  # map frame numbers according to timelapse table
-  
-  
   # first case -> single timepoint
   # second case -> timelapse
   if (length(unique(tidx)) == 1) {
