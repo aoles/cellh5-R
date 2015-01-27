@@ -4,7 +4,7 @@
 C5GalleryImageByIndex
 }
 \description{
-Read a single gallery image from the hdf file. You rarely want to read out a single gallery image. 
+Read a single gallery image from the hdf file. You rarely want to read out a single gallery image.
 To export the galleries from the events found, use \link{C5ExportGallery}.
 }
 \usage{
@@ -54,4 +54,5 @@ Returns a matrix that can be interpreted as 8bit grey level image.
   \code{\link{C5ExportGallery}},
   \code{\link{C5Contours}},
   \code{\link{C5ContourImage}},
+  \code{\link{c5read}},
   }

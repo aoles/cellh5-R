@@ -53,4 +53,5 @@ intensity, standard deviation of the intensity and the size of the object. See
   \code{\link{C5ExportGallery}},
   \code{\link{C5Contours}},
   \code{\link{C5ContourImage}},
+  \code{\link{c5read}},
   }

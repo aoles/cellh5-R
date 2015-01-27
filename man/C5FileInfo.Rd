@@ -39,4 +39,5 @@ C5FileInfo(ch5file)
   \code{\link{C5ExportGallery}},
   \code{\link{C5Contours}},
   \code{\link{C5ContourImage}},
+  \code{\link{c5read}},
   }

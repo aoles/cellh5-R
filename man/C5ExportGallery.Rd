@@ -10,7 +10,7 @@ C5ExportGallery(c5f, outdir, position, channel_region, include_branches=FALSE, g
 
 \arguments{
   \item{ch5file}{\code{\link{CellH5}} instance}
-  \item{outdir}{Out directory where the images will be saved.}  
+  \item{outdir}{Out directory where the images will be saved.}
   \item{position}{Item of \code{\link{C5Positions}}}
   \item{channel_region}{A channel-region pair e.g. \code{primary__primary}}
   \item{include_branches}{If FALSE only one branch of a split track
@@ -19,7 +19,7 @@ C5ExportGallery(c5f, outdir, position, channel_region, include_branches=FALSE, g
 }
 
 \value{
-Returns \code{NULL}. The files follow a naming scheme e.g. \code{TR48__W0__S0037__T00096__O0315.png}. 
+Returns \code{NULL}. The files follow a naming scheme e.g. \code{TR48__W0__S0037__T00096__O0315.png}.
 The meaning is: track, well, site (former position), time and object.
 }
 \author{Rudolf Hoefler <rudolf.hoefler@imba.oeaw.ac.at>}
@@ -54,4 +54,5 @@ The meaning is: track, well, site (former position), time and object.
   \code{\link{C5ExportGallery}},
   \code{\link{C5Contours}},
   \code{\link{C5ContourImage}},
+  \code{\link{c5read}},
   }

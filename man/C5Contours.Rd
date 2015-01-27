@@ -4,8 +4,8 @@
 C5Contours
 }
 \description{
-Reads segmentation contours from file. Contours are saved as compressed string to 
-the file. Decompression take time, therfore it is recommended to use the frame 
+Reads segmentation contours from file. Contours are saved as compressed string to
+the file. Decompression take time, therfore it is recommended to use the frame
 argument to speed up reading. Contours are refered as "Crack Contours".
 }
 \usage{
@@ -20,8 +20,8 @@ contours <- C5Contours(ch5file, position, channel_region, frame = NULL)
 }
 
 \value{
-Returns a list of arrays. Lenght of the array equals the lenght of the frame argument. 
-The dimension of the array is Nx2, where N is the number of points in the polygon. 
+Returns a list of arrays. Lenght of the array equals the lenght of the frame argument.
+The dimension of the array is Nx2, where N is the number of points in the polygon.
 The other dimension simply represents a vector thats points to a pixel in the image.
 }
 \author{Rudolf Hoefler <rudolf.hoefler@imba.oeaw.ac.at>}
@@ -56,4 +56,5 @@ The other dimension simply represents a vector thats points to a pixel in the im
   \code{\link{C5ExportGallery}},
   \code{\link{C5Contours}},
   \code{\link{C5ContourImage}},
+  \code{\link{c5read}},
   }

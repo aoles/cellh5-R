@@ -3,8 +3,8 @@
 \title{C5ContourImage}
 \description{
 Plots an image to the screen (or saves it as png). The image includes color coded
-segmentation contours. The color code is defined in the class defintion. In case 
-of no class definition the color of the contours is by default white. 
+segmentation contours. The color code is defined in the class defintion. In case
+of no class definition the color of the contours is by default white.
 Optional the object labels can be drawn.
 }
 \usage{
@@ -22,7 +22,7 @@ C5ContourImage(ch5file, position, channel_region, frame, zstack = 1, filename = 
   \item{default_color}{Color of unclassified objects (default is white)}
   \item{fontsize}{Font size of the object labels}
   \item{show_labels}{Shows object labels if this option is \code{TRUE}}
-  \item{background_region}{Take a backround image from a different region in case of merged i.e. virtual channel. 
+  \item{background_region}{Take a backround image from a different region in case of merged i.e. virtual channel.
     This option is ignored if the channel-region pair is not a merged channel.}
 }
 \author{Rudolf Hoefler <rudolf.hoefler@imba.oeaw.ac.at>}
@@ -57,5 +57,5 @@ C5ContourImage(ch5file, position, channel_region, frame, zstack = 1, filename = 
   \code{\link{C5ExportGallery}},
   \code{\link{C5Contours}},
   \code{\link{C5ContourImage}},
+  \code{\link{c5read}},
   }
-

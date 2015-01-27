@@ -5,7 +5,9 @@
 cellh5 for fun with R
 }
 \description{
-S4 class and methods for easy access of cellh5 files.
+S4 class and methods for easy access of cellh5 files. It provides a number
+of convenience functions for cellh5. Since cellh5 is a subset of \href{http://www.hdfgroup.org/HDF5/}{HDF5 format}
+it is accessible using the \link{rhdf5} package on the \href{http://www.bioconductor.org/packages/release/bioc/html/rhdf5.html}{BioConductor} website.
 }
 \seealso{
   \code{\link{C5Close}},
@@ -37,4 +39,5 @@ S4 class and methods for easy access of cellh5 files.
   \code{\link{C5ExportGallery}},
   \code{\link{C5Contours}},
   \code{\link{C5ContourImage}},
+  \code{\link{c5read}},
   }

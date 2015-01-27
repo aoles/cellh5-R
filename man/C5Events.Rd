@@ -48,4 +48,5 @@ events <- C5Events(ch5file, position, channel_region, include_branches = TRUE, r
   \code{\link{C5ExportGallery}},
   \code{\link{C5Contours}},
   \code{\link{C5ContourImage}},
+  \code{\link{c5read}},
   }

@@ -41,4 +41,5 @@ timelapse <- C5Timelapse(position)
   \code{\link{C5ExportGallery}},
   \code{\link{C5Contours}},
   \code{\link{C5ContourImage}},
+  \code{\link{c5read}},
   }

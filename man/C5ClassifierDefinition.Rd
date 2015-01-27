@@ -35,4 +35,9 @@ classdef <- C5ClassifierDefinition(ch5file, channel_region)
   \code{\link{C5HasTimelapse}},
   \code{\link{C5ObjectDetails}},
   \code{\link{C5HasClassifiedObjects}},
+  \code{\link{C5GalleryImageByIndex}},
+  \code{\link{C5ExportGallery}},
+  \code{\link{C5Contours}},
+  \code{\link{C5ContourImage}},
+  \code{\link{c5read}},
   }
