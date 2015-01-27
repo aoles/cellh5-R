@@ -3,13 +3,16 @@
 \title{
 Close Cellh5 positions (hdf5 groups)
 }
-\description{
 \usage{
 C5ClosePositions(positions)
 }
 
 \arguments{
-  \item{positions}{list of \link{C5Positions}}}
+ 
+ \item{positions}{List of \code{\link{C5Positions}}}
+ 
+}
+  
 \author{Rudolf Hoefler <rudolf.hoefler@imba.oeaw.ac.at>}
 \seealso{
   \code{\link{C5Close}},
