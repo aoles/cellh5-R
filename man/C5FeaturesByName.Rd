@@ -48,5 +48,6 @@ features <- C5FeaturesByNames(ch5file, position, channel_region, feature_names)
   \code{\link{C5ExportGallery}},
   \code{\link{C5Contours}},
   \code{\link{C5ContourImage}},
+  \code{\link{C5ClosePositions}},
   \code{\link{c5read}},
   }

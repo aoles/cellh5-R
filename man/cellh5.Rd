@@ -46,5 +46,6 @@ one can use all standard tools to inspect the files e.g. HDFView}
   \code{\link{C5ExportGallery}},
   \code{\link{C5Contours}},
   \code{\link{C5ContourImage}},
+  \code{\link{C5ClosePositions}},
   \code{\link{c5read}},
   }

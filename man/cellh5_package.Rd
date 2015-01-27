@@ -39,5 +39,6 @@ it is accessible using the \link{rhdf5} package on the \href{http://www.biocondu
   \code{\link{C5ExportGallery}},
   \code{\link{C5Contours}},
   \code{\link{C5ContourImage}},
+  \code{\link{C5ClosePositions}},
   \code{\link{c5read}},
   }

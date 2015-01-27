@@ -56,5 +56,6 @@ The other dimension simply represents a vector thats points to a pixel in the im
   \code{\link{C5ExportGallery}},
   \code{\link{C5Contours}},
   \code{\link{C5ContourImage}},
+  \code{\link{C5ClosePositions}},
   \code{\link{c5read}},
   }

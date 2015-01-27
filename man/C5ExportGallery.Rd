@@ -54,5 +54,6 @@ The meaning is: track, well, site (former position), time and object.
   \code{\link{C5ExportGallery}},
   \code{\link{C5Contours}},
   \code{\link{C5ContourImage}},
+  \code{\link{C5ClosePositions}},
   \code{\link{c5read}},
   }
