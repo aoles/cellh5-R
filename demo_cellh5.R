@@ -3,6 +3,7 @@
 # rudolf.hoefler@gmail.com
 library(cellh5)
 
+
 c5f <- CellH5("data/_all_positions.ch5")
 chreg <- C5ChannelRegions(c5f)
 primary <- chreg[[1]] # primary__primary
@@ -46,4 +47,4 @@ if (C5HasEvents(positions[[1]])) {
 
 # don't forget to release the resources
 # C5ClosePositions(positions)
-# C5Close(c5f)
+C5Close(c5f, positions)

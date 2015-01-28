@@ -1,9 +1,11 @@
 \name{C5Close}
 \alias{C5Close}
 \title{Close cellh5 instance and release hdf5 resources.}
-\usage{C5Close(ch5file)}
+\usage{C5Close(ch5file, positions=NULL)}
 \arguments{
-  \item{ch5file}{ \code{\link{CellH5}} instance to be released.}
+  \item{ch5file}{\link{CellH5} instance to be released.}
+  \item{positions}{List of \link{C5Positions} which need to be closed separately. 
+  It is also possible to use the function \link{C5ClosePositions}}
 }
 \author{Rudolf Hoefler <rudolf.hoefler@imba.oeaw.ac.at>}
 \seealso{

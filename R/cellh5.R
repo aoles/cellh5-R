@@ -106,8 +106,9 @@ setGeneric("C5HasTimelapse", function(position) {
 })
 
 # XXX remove standardGenerics if possible
-setGeneric("C5Close", function(ch5file) {
-  H5Fclose(ch5file@fid)})
+setGeneric("C5Close", function(ch5file, positions=NULL, ...) {
+  standardGeneric("C5Close")
+  })
 
 setGeneric("C5FileInfo", function(ch5file) {standardGeneric("C5FileInfo")})
 
@@ -234,6 +235,14 @@ setGeneric("C5ClosePositions", function(positions) {
   # rhdf interface sucks, R sucks!
   for (pos in positions) {
    H5Gclose(pos)
+  }
+})
+
+setMethod("C5Close", "CellH5", function(ch5file, positions=NULL, ...) {
+  H5Fclose(ch5file@fid)
+  
+  if (!is.null(positions)) {
+    C5ClosePositions(positions)
   }
 })
 
