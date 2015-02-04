@@ -2,6 +2,7 @@
 \alias{C5Events}
 \title{Read out the tracks found by the event selection.}
 \description{Read out the tracks found by the event selection. The function returns
+an array (nframes by ntracks) where the entries are the class labels.
 \code{NULL} if the position contains no events.}
 \usage{
 events <- C5Events(ch5file, position, channel_region, include_branches = TRUE, return_indices = FALSE)
@@ -13,7 +14,7 @@ events <- C5Events(ch5file, position, channel_region, include_branches = TRUE, r
   \item{channel_region}{A channel-region pair e.g. \code{primary__primary}}
   \item{include_branches}{If FALSE only one branch of a split track
     is taken into account}
-  \item{return_indices}{If TRUE the items of the array are the object indices}
+  \item{return_indices}{If TRUE the items of the array are the object indices of the feature table.}
 }
 \value{\code{Returns a 2x2 array}}
 \author{Rudolf Hoefler <rudolf.hoefler@imba.oeaw.ac.at>}

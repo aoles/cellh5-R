@@ -475,9 +475,9 @@ setMethod("C5Events", "CellH5", function(ch5file, position, channel_region,
   track_ids <- unique(events$obj_id)
   
   if (!return_indices) {
-    toPredictions <- function(i) {return(predictions[[i]])}  
+    toPredictions <- function(i) {return(predictions[[cToRIndex(i)]])}  
   } else {
-    toPredictions <- function(i) {return(i)}
+    toPredictions <- function(i) {return(cToRIndex(i))}
   }
   
   tracks = list()
