@@ -2,7 +2,7 @@
 \alias{C5Events}
 \title{Read out the tracks found by the event selection.}
 \description{Read out the tracks found by the event selection. The function returns
-an array (nframes by ntracks) where the entries are the class labels.
+an array (nframes by ntracks) where the entries are the class labels and
 \code{NULL} if the position contains no events.}
 \usage{
 events <- C5Events(ch5file, position, channel_region, include_branches = TRUE, return_indices = FALSE)
