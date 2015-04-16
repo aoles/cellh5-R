@@ -4,7 +4,7 @@
 library(cellh5)
 
 
-c5f <- CellH5("data2/_all_positions.ch5")
+c5f <- CellH5("data/_all_positions.ch5")
 chreg <- C5ChannelRegions(c5f)
 primary <- chreg[[1]] # primary__primary
 plates <- C5Plates(c5f)
@@ -22,20 +22,20 @@ main_features <- clfeatures[c(1,2,3)]
 # the function return NULL if the file contains no data. For sake of readability
 # is recommended to use the functions C5HasObjecs/C5HasEvents
 
-# if (C5HasObjects(positions[[1]], primary)) {
-#   object_counts <- C5ObjectCounts(c5f, positions[[1]], primary)
-#   features <- C5FeaturesByName(c5f, positions[[1]], primary, main_features)
-#   object_ids <- C5ObjectLabels(positions[[1]], primary)
-#   center <- C5Center(positions$W0_P0013, primary)
-#   bbox <- C5BoundingBoxes(positions$W0_P0013, primary)
-#   orientation <- C5Orientation(positions$W0_P0013, primary)
-#   predictions <- C5Predictions(c5f, positions$W0_P0013, primary, as="label")
-#   probs <- C5PredictionProbabilities(c5f, positions$W0_P0013, primary)
-#   details <- C5ObjectDetails(c5f, positions$W0_P0013, primary)
-#   contours <- C5Contours(c5f, positions$W0_P0013, primary, frame=1)
-# } else {
-#   warning("no objects found!")
-# }
+if (C5HasObjects(positions[[1]], primary)) {
+  object_counts <- C5ObjectCounts(c5f, positions[[1]], primary)
+  features <- C5FeaturesByName(c5f, positions[[1]], primary, main_features)
+  object_ids <- C5ObjectLabels(positions[[1]], primary)
+  center <- C5Center(positions$W0_P0013, primary)
+  bbox <- C5BoundingBoxes(positions$W0_P0013, primary)
+  orientation <- C5Orientation(positions$W0_P0013, primary)
+  predictions <- C5Predictions(c5f, positions$W0_P0013, primary, as="label")
+  probs <- C5PredictionProbabilities(c5f, positions$W0_P0013, primary)
+  details <- C5ObjectDetails(c5f, positions$W0_P0013, primary)
+  contours <- C5Contours(c5f, positions$W0_P0013, primary, frame=1)
+} else {
+  warning("no objects found!")
+}
 
 if (C5HasEvents(positions[[1]])) {
   events <- C5Events(c5f, positions[[1]], primary, include_branches=TRUE, return_indices=F)
