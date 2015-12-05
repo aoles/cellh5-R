@@ -5,8 +5,8 @@ library(cellh5)
 
 
 c5f <- CellH5("/home/public/imba/analysis/hdf5/_all_positions.ch5")
-chreg <- C5ChannelRegions(c5f)
-primary <- chreg[[1]] # primary__primary
+masks <- C5SegementationMasks(c5f)
+primary <- masks[[1]] # primary__primary
 plates <- C5Plates(c5f)
 positions <- C5Positions(c5f, plates[[1]])
 tl = C5Timelapse(positions[[1]])

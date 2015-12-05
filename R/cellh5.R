@@ -116,7 +116,7 @@ setGeneric("C5Plates", function(ch5file) {standardGeneric("C5Plates")})
 
 setGeneric("C5Positions", function(ch5file, plate, ...) {standardGeneric("C5Positions")})
 
-setGeneric("C5ChannelRegions", function(ch5file) {standardGeneric("C5ChannelRegions")})
+setGeneric("C5SegementationMasks", function(ch5file) {standardGeneric("C5SegementationMasks")})
 
 setGeneric("C5ObjectCounts", function(ch5file, position, channel_region, ...) {
   standardGeneric("C5ObjectCounts")})
@@ -346,7 +346,7 @@ setMethod("C5ClassifierDefinition", "CellH5", function(ch5file, channel_region) 
   return(ch5file@global_def$feature[[channel_region]]$object_classification$class_labels)
 })
           
-setMethod("C5ChannelRegions", "CellH5", function(ch5file) {
+setMethod("C5SegementationMasks", "CellH5", function(ch5file) {
     return(as.list(names(ch5file@global_def[["feature"]])))
 })
 
