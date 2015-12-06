@@ -5,8 +5,8 @@ library(cellh5)
 library(grid)
 
 primary <- "primary__primary"
-c5f <- CellH5(file="data/_all_positions.ch5")
-chreg <- C5ChannelRegions(c5f)
+c5f <- CellH5("data/_all_positions.ch5")
+masks <- C5SegementationMasks(c5f)
 plates <- C5Plates(c5f)
 positions <- C5Positions(c5f, plates[[1]])
 
