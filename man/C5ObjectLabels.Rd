@@ -7,11 +7,11 @@ The columns are \code{frame_index} and \code{object_label}. The rows are simply 
 The function returns \code{NULL} if the position contains no object labels.
 }
 \usage{
-C5ObjectLabels(position, channel_region)
+C5ObjectLabels(position, mask)
 }
 \arguments{
   \item{position}{\code{item of \link{C5Positions}}}
-  \item{channel_region}{A channel-region pair e.g. \code{primary__primary}}
+  \item{mask}{A segmentation mask identifier e.g. \code{primary__primary}}
 }
 \author{Rudolf Hoefler <rudolf.hoefler@imba.oeaw.ac.at>}
 \seealso{
@@ -24,7 +24,7 @@ C5ObjectLabels(position, channel_region)
   \code{\link{C5ObjectCounts}},
   \code{\link{C5ObjectLabels}},
   \code{\link{C5ReadImage}},
-  \code{\link{C5ChannelRegions}},
+  \code{\link{C5SegmentationMasks}},
   \code{\link{C5ClassifierDefinition}},
   \code{\link{C5FeatureNames}},
   \code{\link{C5FeaturesByName}},

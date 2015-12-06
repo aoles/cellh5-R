@@ -14,7 +14,7 @@ masks <- C5SegmentationMasks(ch5file)
 }
 \note{There are different color channels mapped to "primary", "secondary or "tertiary" channel. Each channel can have different masks e.g. exanded or outside.
 A mask identifier is a string consisting of the channel name and
-mask (or region) name, separated by two underscores e.g. \code{primary__primary}}
+mask (or region) name, separated by two underscores e.g. \code{"primary__primary"}}
 
 \author{Rudolf Hoefler <rudolf.hoefler@imba.oeaw.ac.at>}
 \seealso{

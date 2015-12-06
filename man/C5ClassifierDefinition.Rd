@@ -2,11 +2,11 @@
 \alias{C5ClassifierDefinition}
 \title{Read the classifier definition from the file.}
 \usage{
-classdef <- C5ClassifierDefinition(ch5file, channel_region)
+classdef <- C5ClassifierDefinition(ch5file, mask)
 }
 \arguments{
   \item{ch5file}{\code{\link{CellH5}} instance}
-  \item{channel_region}{A channel-region pair e.g. \code{primary__primary}.}
+  \item{mask}{A segmentation mask identifier e.g. \code{primary__primary}.}
   }
 \author{Rudolf Hoefler <rudolf.hoefler@imba.oeaw.ac.at>}
 \seealso{
@@ -19,7 +19,7 @@ classdef <- C5ClassifierDefinition(ch5file, channel_region)
   \code{\link{C5ObjectCounts}},
   \code{\link{C5ObjectLabels}},
   \code{\link{C5ReadImage}},
-  \code{\link{C5ChannelRegions}},
+  \code{\link{C5SegmentationMasks}},
   \code{\link{C5ClassifierDefinition}},
   \code{\link{C5FeatureNames}},
   \code{\link{C5FeaturesByName}},

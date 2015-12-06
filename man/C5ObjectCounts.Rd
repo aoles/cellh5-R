@@ -4,12 +4,12 @@
 \description{Returns a data.frame of the object counts. The column names correspond
 to the class names, rows to the frame numbers. The Function returns \code{NULL}
 if the position contains no objects.}
-\usage{counts <- C5ObjectCounts(ch5file, position, channel_region)}
+\usage{counts <- C5ObjectCounts(ch5file, position, mask)}
 
 \arguments{
   \item{ch5file}{\code{\link{CellH5}} instance}
   \item{position}{\code{item of \link{C5Positions}}}
-  \item{channel_region}{A channel-region pair e.g. \code{primary__primary}}}
+  \item{mask}{A segmentation mask identifier e.g. \code{primary__primary}}}
 \author{Rudolf Hoefler <rudolf.hoefler@imba.oeaw.ac.at>}
 
 \seealso{
@@ -22,7 +22,7 @@ if the position contains no objects.}
   \code{\link{C5ObjectCounts}},
   \code{\link{C5ObjectLabels}},
   \code{\link{C5ReadImage}},
-  \code{\link{C5ChannelRegions}},
+  \code{\link{C5SegmentationMasks}},
   \code{\link{C5ClassifierDefinition}},
   \code{\link{C5FeatureNames}},
   \code{\link{C5FeaturesByName}},

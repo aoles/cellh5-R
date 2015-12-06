@@ -2,13 +2,13 @@
 \alias{C5TimeIdx}
 \title{Return a list of frame numbers for each object.}
 \description{Returns a list of frame indices for each object. The lenght of the
-list is  the total number of objects found in a particular position and channel-region.
+list is  the total number of objects found in a particular position and segmentation mask.
 The frame index can be used to look up in the timelapse table (\code{\link{C5Timelapse}}).
 The function returns \code{NULL} if no time indices are available.}
-\usage{tidx <- C5TimeIdx(position, channel_region)}
+\usage{tidx <- C5TimeIdx(position, mask)}
 \arguments{
   \item{position}{\code{item of \link{C5Positions}}}
-  \item{channel_region}{A channel-region pair e.g. \code{primary__primary}}
+  \item{mask}{A segmentation mask identifier e.g. \code{primary__primary}}
 }
 \author{Rudolf Hoefler <rudolf.hoefler@imba.oeaw.ac.at>}
 \seealso{
@@ -21,7 +21,7 @@ The function returns \code{NULL} if no time indices are available.}
   \code{\link{C5ObjectCounts}},
   \code{\link{C5ObjectLabels}},
   \code{\link{C5ReadImage}},
-  \code{\link{C5ChannelRegions}},
+  \code{\link{C5SegmentationMasks}},
   \code{\link{C5ClassifierDefinition}},
   \code{\link{C5FeatureNames}},
   \code{\link{C5FeaturesByName}},

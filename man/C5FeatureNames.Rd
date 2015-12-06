@@ -3,14 +3,14 @@
 \title{Read out the feature names used for a particular classifier}
 \description{
 Read out the feature names used for a particular classifier which was setup for
-particular channel-region
+particular segmentation mask
 }
 \usage{
-feature_names <- C5FeatureNames(ch5file, channel_region)
+feature_names <- C5FeatureNames(ch5file, mask)
 }
 \arguments{
   \item{position}{\code{Item of \link{C5Positions}}}
-  \item{channel_region}{A channel-region pair e.g. \code{primary__primary}}
+  \item{mask}{A segmentation mask identifier e.g. \code{primary__primary}}
 }
 \value{Returns an array
 }
@@ -26,7 +26,7 @@ feature_names <- C5FeatureNames(ch5file, channel_region)
   \code{\link{C5ObjectCounts}},
   \code{\link{C5ObjectLabels}},
   \code{\link{C5ReadImage}},
-  \code{\link{C5ChannelRegions}},
+  \code{\link{C5SegmentationMasks}},
   \code{\link{C5ClassifierDefinition}},
   \code{\link{C5FeatureNames}},
   \code{\link{C5FeaturesByName}},

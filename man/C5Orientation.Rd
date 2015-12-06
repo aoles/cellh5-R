@@ -5,11 +5,11 @@
 The function returns \code{NULL} if the position contains no information about angle and
 eccentricity.}
 \usage{
-orientation <- C5Orientation(position, channel_region)}
+orientation <- C5Orientation(position, mask)}
 
 \arguments{
   \item{position}{\code{Item of \link{C5Positions}}}
-  \item{channel_region}{A channel-region pair e.g. \code{primary__primary}}
+  \item{mask}{A segmentation mask identifier e.g. \code{primary__primary}}
 }
 \note{Note that \code{angle} and \code{eccentricity} are not invariant against affine transformations. Thats the reason why they are not included in the feature vector.}
 \value{\code{Returns a data.frame}}
@@ -24,7 +24,7 @@ orientation <- C5Orientation(position, channel_region)}
   \code{\link{C5ObjectCounts}},
   \code{\link{C5ObjectLabels}},
   \code{\link{C5ReadImage}},
-  \code{\link{C5ChannelRegions}},
+  \code{\link{C5SegmentationMasks}},
   \code{\link{C5ClassifierDefinition}},
   \code{\link{C5FeatureNames}},
   \code{\link{C5FeaturesByName}},

@@ -12,7 +12,7 @@ This method is equivalent to the \link{h5read} method of the rhdf5 package excep
 a different error message if a subgroup does not exits (more readable to not programmers).
 }
 \usage{
-c5read(ch5loc, name, index = NULL, start = NULL, stride = NULL, block = NULL, count = NULL, compoundAsDataFrame = TRUE, callGeneric = TRUE, read.attributes = TRUE)
+c5read(position, name, index = NULL, start = NULL, stride = NULL, block = NULL, count = NULL, compoundAsDataFrame = TRUE, callGeneric = TRUE, read.attributes = TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

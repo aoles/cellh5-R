@@ -1,13 +1,13 @@
 \name{C5BoundingBoxes}
 \alias{C5BoundingBoxes}
 \title{Return the bounding boxes of the object.}
-\description{Return the bounding boxes of all objects for a particular position and channel-region.
+\description{Return the bounding boxes of all objects for a particular position and segmentatin mask.
 The function returns \code{NULL} if the position contains no bounding boxes.}
 \usage{
-bboxes <- C5BoundingBoxes(position, channel_region)}
+bboxes <- C5BoundingBoxes(position, mask)}
 \arguments{
   \item{position}{Item of \code{\link{C5Positions}}}
-  \item{channel_region}{A channel-region pair e.g. \code{primary__primary}}
+  \item{mask}{A segmentation mask identifier e.g. \code{primary__primary}}
 }
 \author{Rudolf Hoefler <rudolf.hoefler@imba.oeaw.ac.at>}
 \seealso{
@@ -20,7 +20,7 @@ bboxes <- C5BoundingBoxes(position, channel_region)}
   \code{\link{C5ObjectCounts}},
   \code{\link{C5ObjectLabels}},
   \code{\link{C5ReadImage}},
-  \code{\link{C5ChannelRegions}},
+  \code{\link{C5SegmentationMasks}},
   \code{\link{C5ClassifierDefinition}},
   \code{\link{C5FeatureNames}},
   \code{\link{C5FeaturesByName}},

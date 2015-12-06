@@ -8,13 +8,13 @@ of no class definition the color of the contours is by default white.
 Optional the object labels can be drawn.
 }
 \usage{
-C5ContourImage(ch5file, position, channel_region, frame, zstack = 1, filename = NULL, default_color = "#ffffff", fontsize = 12, show_labels = TRUE)
+C5ContourImage(ch5file, position, mask, frame, zstack = 1, filename = NULL, default_color = "#ffffff", fontsize = 12, show_labels = TRUE)
 }
 
 \arguments{
   \item{ch5file}{\code{\link{CellH5}} instance}
   \item{position}{Item of \code{\link{C5Positions}}}
-  \item{channel_region}{A channel-region pair e.g. \code{primary__primary}}
+  \item{mask}{A segmentation mask identifier e.g. \code{primary__primary}}
   \item{index}{Object index of the cell. Index is in the range form 1 to max number of objects}
   \item{frame}{Frame number of the image}
   \item{zstack}{Index of the zsclice}
@@ -22,8 +22,8 @@ C5ContourImage(ch5file, position, channel_region, frame, zstack = 1, filename = 
   \item{default_color}{Color of unclassified objects (default is white)}
   \item{fontsize}{Font size of the object labels}
   \item{show_labels}{Shows object labels if this option is \code{TRUE}}
-  \item{background_region}{Take a backround image from a different region in case of merged i.e. virtual channel.
-    This option is ignored if the channel-region pair is not a merged channel.}
+  \item{background_region}{Take a backround image from a different segmentation mask in case of merged i.e. virtual channel.
+    This option is ignored if the segmentation mask is not a merged channel.}
 }
 \author{Rudolf Hoefler <rudolf.hoefler@imba.oeaw.ac.at>}
 
@@ -37,7 +37,7 @@ C5ContourImage(ch5file, position, channel_region, frame, zstack = 1, filename = 
   \code{\link{C5ObjectCounts}},
   \code{\link{C5ObjectLabels}},
   \code{\link{C5ReadImage}},
-  \code{\link{C5ChannelRegions}},
+  \code{\link{C5SegmentationMasks}},
   \code{\link{C5ClassifierDefinition}},
   \code{\link{C5FeatureNames}},
   \code{\link{C5FeaturesByName}},

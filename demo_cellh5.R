@@ -46,7 +46,6 @@ if (C5HasEvents(pos)) {
   warning('no events found!')
 }
 
-
 # don't forget to release the resources
 # C5ClosePositions(positions)
 C5Close(c5f, positions)

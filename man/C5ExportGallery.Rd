@@ -5,14 +5,14 @@
 Export events as gallery images (one file per track). The output format is png.
 }
 \usage{
-C5ExportGallery(c5f, outdir, position, channel_region, include_branches=FALSE, gallery_size=60)
+C5ExportGallery(c5f, outdir, position, mask, include_branches=FALSE, gallery_size=60)
 }
 
 \arguments{
   \item{ch5file}{\code{\link{CellH5}} instance}
   \item{outdir}{Out directory where the images will be saved.}
   \item{position}{Item of \code{\link{C5Positions}}}
-  \item{channel_region}{A channel-region pair e.g. \code{primary__primary}}
+  \item{mask}{A segmentation mask identifier e.g. \code{primary__primary}}
   \item{include_branches}{If FALSE only one branch of a split track
     is taken into account}
   \item{gallery_size}{Size in pixels of the gallery image. Default is 60}
@@ -34,7 +34,7 @@ The meaning is: track, well, site (former position), time and object.
   \code{\link{C5ObjectCounts}},
   \code{\link{C5ObjectLabels}},
   \code{\link{C5ReadImage}},
-  \code{\link{C5ChannelRegions}},
+  \code{\link{C5SegmentationMasks}},
   \code{\link{C5ClassifierDefinition}},
   \code{\link{C5FeatureNames}},
   \code{\link{C5FeaturesByName}},
