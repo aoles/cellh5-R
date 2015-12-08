@@ -1,7 +1,7 @@
-## C5
+## ch5-R
 
 
-C5 is a small R-library that provides an S4-class for easy access of cellh5-files. It depends on the [bioconductor](http://www.bioconductor.org)-package, especially the the `rhdf5` package and the `EBImage` package, which are part of bioconductor. You need to install `R 3.1.0` and `rhdf 2.8.0`. Older versions of `rhdf` do not read the data correctly from the hdf file. Other dependencies are `base64enc` and the `grid` package.
+ch5-R is a tiny R-package that provides an S4-class for highlevel access to cellh5-files. It depends on the [bioconductor](http://www.bioconductor.org)-packages `rhdf5` package and `EBImage`. Other dependencies are `base64enc` and the `grid` package.
 
 #### Installing bioconductor
 ```
