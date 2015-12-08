@@ -1,7 +1,7 @@
 ## ch5-R
 
 
-ch5-R is a tiny R-package that provides an S4-class for highlevel access to cellh5-files. It depends on the [bioconductor](http://www.bioconductor.org)-packages `rhdf5` package and `EBImage`. Other dependencies are `base64enc` and the `grid` package.
+ch5-R is a tiny R-package providing an S4-class for highlevel access to cellh5-files. It depends on the [bioconductor](http://www.bioconductor.org)-packages `rhdf5` package and `EBImage`. Other dependencies are `base64enc` and the `grid` package.
 
 #### Installing bioconductor
 ```
