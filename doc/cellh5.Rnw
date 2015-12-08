@@ -87,7 +87,7 @@ positions or timelapse tables.
 
 <<loadSource>>==
 # segmentation information 
-chreg <- C5ChannelRegions(c5f)
+chreg <- C5SegementationMasks(c5f)
 plates <- C5Plates(c5f)
 positions <- C5Positions(c5f, plates[[1]])
 timelapse <- C5Timelapse(positions[[1]])
@@ -146,10 +146,6 @@ if (C5HasEvents(positions$W0_P0013)) {
 
 Although \texttt{C5EventFeatures(...)} would return \texttt{NULL} if the file contains no events, it is recommend to use these function to improve code readablility.
 
-
-<<loadSource>>==
-head(C5FileInfo(c5f))
-@
 
 \section{Currently implemented functions}
 All methods start with the prefix \textbf{C5}. For detailed information of each
