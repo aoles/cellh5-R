@@ -7,13 +7,13 @@
 Checks if a position contains objects found by segmentation.
 }
 \usage{
-if (C5HasObjects(position, channel_region) {
+if (C5HasObjects(position, mask) {
   print("Current position contains objects")
   }
 }
 \arguments{
   \item{position}{\code{Item of \link{C5Positions}}}
-  \item{channel_region}{A channel-region pair e.g. \code{primary__primary}}
+  \item{mask}{A segmentation mask identifier e.g. \code{primary__primary}}
 }
 \value{The return value is boolean.}
 \author{Rudolf Hoefler <rudolf.hoefler@imba.oeaw.ac.at>}
@@ -24,11 +24,11 @@ if (C5HasObjects(position, channel_region) {
   \code{\link{C5Plates}},
   \code{\link{C5Positions}},
   \code{\link{C5Timelapse}},
-  \code{\link{C5TimeIdx}},
+  \code{\link{C5FrameNumbers}},
   \code{\link{C5ObjectCounts}},
   \code{\link{C5ObjectLabels}},
   \code{\link{C5ReadImage}},
-  \code{\link{C5ChannelRegions}},
+  \code{\link{C5SegmentationMasks}},
   \code{\link{C5ClassifierDefinition}},
   \code{\link{C5FeatureNames}},
   \code{\link{C5FeaturesByName}},

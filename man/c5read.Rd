@@ -12,7 +12,7 @@ This method is equivalent to the \link{h5read} method of the rhdf5 package excep
 a different error message if a subgroup does not exits (more readable to not programmers).
 }
 \usage{
-c5read(ch5loc, name, index = NULL, start = NULL, stride = NULL, block = NULL, count = NULL, compoundAsDataFrame = TRUE, callGeneric = TRUE, read.attributes = TRUE)
+c5read(position, name, index = NULL, start = NULL, stride = NULL, block = NULL, count = NULL, compoundAsDataFrame = TRUE, callGeneric = TRUE, read.attributes = TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -61,11 +61,11 @@ The argument description was taken from the \link{h5read} man page. Further deta
   \code{\link{C5Plates}},
   \code{\link{C5Positions}},
   \code{\link{C5Timelapse}},
-  \code{\link{C5TimeIdx}},
+  \code{\link{C5FrameNumbers}},
   \code{\link{C5ObjectCounts}},
   \code{\link{C5ObjectLabels}},
   \code{\link{C5ReadImage}},
-  \code{\link{C5ChannelRegions}},
+  \code{\link{C5SegmentationMasks}},
   \code{\link{C5ClassifierDefinition}},
   \code{\link{C5FeatureNames}},
   \code{\link{C5FeaturesByName}},

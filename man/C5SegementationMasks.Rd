@@ -1,21 +1,20 @@
-\name{C5ChannelRegions}
-\alias{C5ChannelRegions}
-\title{List of the segmentation regions
+\name{C5SegmentationMasks}
+\alias{C5SegmentationMasks}
+\title{List of the segmentation masks
 }
 \description{
-Retruns a list of the segmentation regions (channel-region pairs).
+Retruns a list of the segmentation mask identifiers e.g. "primary__primary".
 }
 \usage{
-cheannel_regions <- C5ChannelRegions(ch5file)
+masks <- C5SegmentationMasks(ch5file)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{ch5file}{ \code{\link{CellH5}} instance }
 }
-\note{There are different color channels mapped to primary, secondary or tertiary
-channel. Each channel can have different regions e.g. exanded or outside.
-A channel-region pair is encoded as string consisting of the channel name and
-region name, separated by two underscores e.g. \code{primary__primary}}
+\note{There are different color channels mapped to "primary", "secondary or "tertiary" channel. Each channel can have different masks e.g. exanded or outside.
+A mask identifier is a string consisting of the channel name and
+mask (or region) name, separated by two underscores e.g. \code{"primary__primary"}}
 
 \author{Rudolf Hoefler <rudolf.hoefler@imba.oeaw.ac.at>}
 \seealso{
@@ -24,11 +23,11 @@ region name, separated by two underscores e.g. \code{primary__primary}}
   \code{\link{C5Plates}},
   \code{\link{C5Positions}},
   \code{\link{C5Timelapse}},
-  \code{\link{C5TimeIdx}},
+  \code{\link{C5FrameNumbers}},
   \code{\link{C5ObjectCounts}},
   \code{\link{C5ObjectLabels}},
   \code{\link{C5ReadImage}},
-  \code{\link{C5ChannelRegions}},
+  \code{\link{C5SegmentationMasks}},
   \code{\link{C5ClassifierDefinition}},
   \code{\link{C5FeatureNames}},
   \code{\link{C5FeaturesByName}},

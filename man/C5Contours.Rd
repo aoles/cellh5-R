@@ -9,12 +9,12 @@ the file. Decompression take time, therfore it is recommended to use the frame
 argument to speed up reading. Contours are refered as "Crack Contours".
 }
 \usage{
-contours <- C5Contours(ch5file, position, channel_region, frame = NULL)
+contours <- C5Contours(ch5file, position, mask, frame = NULL)
 }
 \arguments{
   \item{ch5file}{\code{\link{CellH5}} instance}
   \item{position}{Item of \code{\link{C5Positions}}}
-  \item{channel_region}{A channel-region pair e.g. \code{primary__primary}}
+  \item{mask}{A segmentation mask identifier e.g. \code{primary__primary}}
   \item{frame}{List of frame numbers. If this option is ommited all contours will
   be read out. It is recommended to use this option}
 }
@@ -32,11 +32,11 @@ The other dimension simply represents a vector thats points to a pixel in the im
   \code{\link{C5Plates}},
   \code{\link{C5Positions}},
   \code{\link{C5Timelapse}},
-  \code{\link{C5TimeIdx}},
+  \code{\link{C5FrameNumbers}},
   \code{\link{C5ObjectCounts}},
   \code{\link{C5ObjectLabels}},
   \code{\link{C5ReadImage}},
-  \code{\link{C5ChannelRegions}},
+  \code{\link{C5SegmentationMasks}},
   \code{\link{C5ClassifierDefinition}},
   \code{\link{C5FeatureNames}},
   \code{\link{C5FeaturesByName}},

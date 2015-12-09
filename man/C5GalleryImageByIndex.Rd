@@ -8,12 +8,12 @@ Read a single gallery image from the hdf file. You rarely want to read out a sin
 To export the galleries from the events found, use \link{C5ExportGallery}.
 }
 \usage{
-gal_image <- C5GalleryImageByIndex(ch5file, position, channel_region, index, zstack=1, gallery_size=60)
+gal_image <- C5GalleryImageByIndex(ch5file, position, mask, index, zstack=1, gallery_size=60)
 }
 \arguments{
   \item{ch5file}{\code{\link{CellH5}} instance}
   \item{position}{Item of \code{\link{C5Positions}}}
-  \item{channel_region}{A channel-region pair e.g. \code{primary__primary}}
+  \item{mask}{A segmentation mask identifier e.g. \code{primary__primary}}
   \item{index}{Object index of the cell. Index is in the range form 1 to max number of objects}
   \item{zstack}{Index of the zslice. Default is 1, there is always 1}
   \item{gallery_size}{Size in pixels of the gallery image. Default is 60}
@@ -30,11 +30,11 @@ Returns a matrix that can be interpreted as 8bit grey level image.
   \code{\link{C5Plates}},
   \code{\link{C5Positions}},
   \code{\link{C5Timelapse}},
-  \code{\link{C5TimeIdx}},
+  \code{\link{C5FrameNumbers}},
   \code{\link{C5ObjectCounts}},
   \code{\link{C5ObjectLabels}},
   \code{\link{C5ReadImage}},
-  \code{\link{C5ChannelRegions}},
+  \code{\link{C5SegmentationMasks}},
   \code{\link{C5ClassifierDefinition}},
   \code{\link{C5FeatureNames}},
   \code{\link{C5FeaturesByName}},
