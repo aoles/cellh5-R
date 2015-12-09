@@ -15,7 +15,7 @@ classdef <- C5ClassifierDefinition(ch5file, mask)
   \code{\link{C5Plates}},
   \code{\link{C5Positions}},
   \code{\link{C5Timelapse}},
-  \code{\link{C5TimeIdx}},
+  \code{\link{C5FrameNumbers}},
   \code{\link{C5ObjectCounts}},
   \code{\link{C5ObjectLabels}},
   \code{\link{C5ReadImage}},

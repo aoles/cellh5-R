@@ -139,7 +139,7 @@ setGeneric("C5Timelapse", function(position) {
   }
 })
 
-setGeneric("C5TimeIdx", function(position, mask) {
+setGeneric("C5FrameNumbers", function(position, mask) {
   tidx <- c5read(position, name=sprintf("object/%s", mask))$time_idx
   if (length(tidx) == 0) {
     return(NULL)
@@ -290,7 +290,7 @@ setMethod("C5ObjectCounts", "CellH5", function(ch5file, position, mask) {
   }
   
   classdef <- C5ClassifierDefinition(ch5file, mask)  
-  time_idx <- C5TimeIdx(position, mask)
+  time_idx <- C5FrameNumbers(position, mask)
   label_idx <- c5read(position,
                       name=sprintf("feature/%s/object_classification/prediction",
                                    mask))$label_idx
@@ -531,7 +531,7 @@ setMethod("C5Contours", "CellH5", function(ch5file, position, mask, frame=NULL){
   
   # saves a lot of computing time due to the decoding of the string
   if (!is.null(frame)) {
-    time_idx <- C5TimeIdx(position, mask)
+    time_idx <- C5FrameNumbers(position, mask)
     frame_idx <- which(time_idx == frame)
     raw <- raw[frame_idx]
   }
@@ -571,7 +571,7 @@ setMethod("C5ContourImage", "CellH5", function(ch5file, position, mask,
   }
 
   # these are needed for color coded contours and labels
-  frame_idx = which(C5TimeIdx(position, mask) == frame)
+  frame_idx = which(C5FrameNumbers(position, mask) == frame)
   center <- C5Center(position, mask)[frame_idx, ]
   labels <- C5ObjectLabels(position, mask)$object_label[frame_idx]
   colors <- C5Predictions(ch5file, position, mask, as_="color")[frame_idx]
@@ -667,7 +667,7 @@ setMethod("C5GalleryImageByIndex", "CellH5",
   }
   index <- cToRIndex(index)
             
-  frame <- C5TimeIdx(position, mask)[index]
+  frame <- C5FrameNumbers(position, mask)[index]
   image_ <- C5ReadImage(ch5file, position, mask, frame=frame, zstack=zstack)
   center <- C5Center(position, mask)[index, ]
   width <- dim(image_)[1]

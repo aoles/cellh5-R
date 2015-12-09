@@ -4,7 +4,7 @@
 library(cellh5)
 
 
-c5f <- CellH5("/home/public/imba/analysis/hdf5/_all_positions.ch5")
+c5f <- CellH5("data/_all_positions.ch5")
 masks <- C5SegementationMasks(c5f)
 primary <- masks[[1]] # primary__primary
 plates <- C5Plates(c5f)
@@ -45,6 +45,9 @@ if (C5HasEvents(pos)) {
 } else {
   warning('no events found!')
 }
+
+# demonstrate low level access
+print(head(c5read(pos, "feature/primary__primary/center")))
 
 # don't forget to release the resources
 # C5ClosePositions(positions)
