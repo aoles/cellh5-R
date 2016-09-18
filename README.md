@@ -1,8 +1,7 @@
 cellh5-R
 ========
 
-cellh5-R is a tiny R-package providing an S4-class for highlevel access to cellh5-files. It depends on the [bioconductor](http://www.bioconductor.org)-packages `rhdf5` package and `EBImage`. Other dependencies are `base64enc` and the `grid` package.
-
+cellh5-R is a tiny R-package providing an S4-class for highlevel access to cellh5-files. It depends on the [bioconductor](http://www.bioconductor.org)-packages `rhdf5` package and `EBImage`. Another dependency is `base64enc` package.
 #### Documentation
 The package is fully documented within the R-manual pages.
 ```
@@ -13,7 +12,6 @@ help(cellh5)
 ```
 source("http://bioconductor.org/biocLite.R")
 biocLite("rhdf5")
-biocLite("EBImage")
 ```
 
 

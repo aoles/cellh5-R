@@ -4,7 +4,7 @@
 library(cellh5)
 
 
-c5f <- CellH5("data/_all_positions.ch5")
+c5f <- CellH5("/home/public/imba/analysis-1/hdf5/_all_positions.ch5")
 masks <- C5SegementationMasks(c5f)
 primary <- masks[[1]] # primary__primary
 plates <- C5Plates(c5f)
