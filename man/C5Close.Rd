@@ -4,7 +4,7 @@
 \usage{C5Close(ch5file, positions=NULL)}
 \arguments{
   \item{ch5file}{\link{CellH5} instance to be released.}
-  \item{positions}{List of \link{C5Positions} which need to be closed separately. 
+  \item{positions}{List of \link{C5Positions} which need to be closed separately.
   It is also possible to use the function \link{C5ClosePositions}}
 }
 \author{Rudolf Hoefler <rudolf.hoefler@imba.oeaw.ac.at>}
@@ -34,10 +34,7 @@
   \code{\link{C5HasTimelapse}},
   \code{\link{C5ObjectDetails}},
   \code{\link{C5HasClassifiedObjects}},
-  \code{\link{C5GalleryImageByIndex}},
-  \code{\link{C5ExportGallery}},
   \code{\link{C5Contours}},
-  \code{\link{C5ContourImage}},
   \code{\link{C5ClosePositions}},
   \code{\link{c5read}},
   }

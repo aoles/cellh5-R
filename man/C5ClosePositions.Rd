@@ -8,11 +8,11 @@ C5ClosePositions(positions)
 }
 
 \arguments{
- 
+
  \item{positions}{List of \code{\link{C5Positions}}}
- 
+
 }
-  
+
 \author{Rudolf Hoefler <rudolf.hoefler@imba.oeaw.ac.at>}
 \seealso{
   \code{\link{C5Close}},
@@ -40,10 +40,7 @@ C5ClosePositions(positions)
   \code{\link{C5HasTimelapse}},
   \code{\link{C5ObjectDetails}},
   \code{\link{C5HasClassifiedObjects}},
-  \code{\link{C5GalleryImageByIndex}},
-  \code{\link{C5ExportGallery}},
   \code{\link{C5Contours}},
-  \code{\link{C5ContourImage}},
   \code{\link{C5ClosePositions}},
   \code{\link{C5ClosePositions}},
   \code{\link{c5read}},
