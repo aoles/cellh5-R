@@ -6,6 +6,24 @@ library('rhdf5', verbose=FALSE)
 library('grid', verbose=FALSE)
 library('base64enc', verbose=FALSE)
 
+
+c5read <- function(position, name, index=NULL,
+                   start=NULL, stride=NULL, block=NULL, count=NULL,
+                   compoundAsDataFrame = TRUE, callGeneric = TRUE,
+                   read.attributes = TRUE) {
+  
+  if (H5Lexists(position, name)){
+    ret <- h5read(position, name, index=index,
+                  start=start, stride=stride, block=block, count=count,
+                  compoundAsDataFrame=compoundAsDataFrame, callGeneric=callGeneric,
+                  read.attributes=read.attributes)
+  } else {
+    show(position)
+    stop(sprintf("No subgroup %s in HDF5 group", name))
+  }
+  return(ret)
+}
+
 cToRIndex <- function(list_) {
   # Cellh5 is index based, R used fortran index convention --> it sucks
   return(list_ + 1)
